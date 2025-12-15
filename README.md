@@ -1,1 +1,2 @@
 # onboarding-foundation
+multi-tenant onboarding system that allows new companies to create their account; configure company structure (departments); create users; assign roles & permissions; and ensure a scalable permission model supporting different hierarchies of users.
