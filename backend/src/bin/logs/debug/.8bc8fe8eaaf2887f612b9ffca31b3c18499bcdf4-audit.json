@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\LENOVO\\Documents\\produqtedgeweekgoals\\onboarding-foundation\\backend\\src\\bin\\logs\\debug\\.8bc8fe8eaaf2887f612b9ffca31b3c18499bcdf4-audit.json",
+    "files": [
+        {
+            "date": 1765812661779,
+            "name": "C:\\Users\\LENOVO\\Documents\\produqtedgeweekgoals\\onboarding-foundation\\backend\\src\\bin\\logs\\debug\\2025-12-15.log",
+            "hash": "a5ab43efbf489c4dcb5d4046d5a99d5eb73a3130858fec028bd91775279cde23"
+        }
+    ],
+    "hashType": "sha256"
+}
