@@ -7,9 +7,9 @@ class AuthController {
 
   public loginSuperAdmin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const superAdmin = await this.superAdminservice.login(req.body.email, req.body.password);
+      const superAdminToken = await this.superAdminservice.login(req.body.email, req.body.password);
 
-      res.status(200).json(superAdmin);
+      res.status(200).json({token: superAdminToken});
     } catch (error) {
       if (error instanceof Error) {
         next(createHttpError(401, error))

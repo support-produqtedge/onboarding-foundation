@@ -11,5 +11,6 @@ export const {
   DB_PORT,
   DB_DATABASE,
   SUPER_ADMIN_EMAIL,
-  SUPER_ADMIN_PASSWORD
+  SUPER_ADMIN_PASSWORD,
+  SECRET_KEY
 } = process.env;
