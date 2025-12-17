@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run db:init && ts-node-dev --respawn --pretty --transpile-only ./src/bin/www",
+    "dev": "npm run db:init-dev && npm run db:createSuperAdmin-dev && ts-node-dev --respawn --pretty --transpile-only ./src/bin/www",
     "start": "node ./build/bin/www",
     "build": "tsc --skipLibCheck",
-    "db:init": "ts-node ./src/db/scripts/db_init.ts",
-    "db:createSuperAdmin": "ts-node ./src/db/scripts/super_admin-create.ts"
+    "db:init": "node ./build/db/scripts/db_init.js",
+    "db:init-dev": "ts-node ./src/db/scripts/db_init.ts",
+    "db:createSuperAdmin": "node ./build/db/scripts/db_admin-create.ts",
+    "db:createSuperAdmin-dev": "ts-node ./src/db/scripts/super_admin-create.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

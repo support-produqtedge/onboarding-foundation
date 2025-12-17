@@ -1,4 +1,6 @@
 import z from "zod";
+import { createSession } from "./lib/session";
+import { redirect } from "next/navigation";
 
 const adminLoginSchema = z.object({
   email: z.email({ message: "Invalid email address"}).trim(),
@@ -24,8 +26,11 @@ export async function loginAdmin(prevState: unknown, formData: FormData) {
     },
     body: JSON.stringify({email, password})
   });
-  const data = await response.json();
-  console.log(data)
+  if (!response.ok) {
+    return (await response.json());
+  }
 
-  return adminLoginData.success
+  const data = await response.json();
+  await createSession(data.token);
+  redirect("/dashboard");
 }
