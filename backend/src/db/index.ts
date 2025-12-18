@@ -16,12 +16,6 @@ export const Company = CompanySchema(sequelize);
 export const User = UserSchema(sequelize);
 export const CompanyKYC = CompanyKYCSchema(sequelize);
 
-User.hasOne(Role, { foreignKey: 'user_id'});
-Role.belongsTo(User, {foreignKey: 'user_id'});
-
-User.hasMany(Company, {foreignKey: 'user_id'});
-Company.belongsTo(User, { foreignKey: 'user_id' });
-
 
 const checkConnection = async () => {
   try {
