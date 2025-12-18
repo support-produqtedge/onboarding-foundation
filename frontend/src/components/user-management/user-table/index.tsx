@@ -12,8 +12,21 @@ import { getInvoiceTableData } from "./data";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/components/icons";
 
-export async function UserTable() {
-  const data = await getInvoiceTableData();
+interface UserTableProps {
+  users: {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  roleId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date
+}[]
+
+}
+
+export async function UserTable({ users }: UserTableProps) {
 
   return (
     <>
@@ -33,7 +46,7 @@ export async function UserTable() {
         <Table>
           <TableHeader>
             <TableRow className="border-none bg-[#F7F9FC] [&>th]:py-4 [&>th]:text-base [&>th]:text-dark ">
-              <TableHead className="min-w-[155px] xl:pl-7.5">Users</TableHead>
+              <TableHead className="min-w-38.75 xl:pl-7.5">Users</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Last Login</TableHead>
@@ -42,12 +55,12 @@ export async function UserTable() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item, index) => (
-              <TableRow key={index} className="border-[#eee]">
-                <TableCell className="min-w-[155px] xl:pl-7.5">
-                  <h5 className="text-dark">{item.name}</h5>
-                  <p className="mt-[3px] text-body-sm font-medium">
-                    {item.price}
+            {users.map((item, index) => (
+              <TableRow key={item.id} className="border-[#eee]">
+                <TableCell className="min-w-38.75 xl:pl-7.5">
+                  <h5 className="text-dark">{`${item.firstName} ${item.lastName}`}</h5>
+                  <p className="mt-0.75 text-body-sm font-medium">
+                    {item.email}
                   </p>
                 </TableCell>
 
@@ -55,27 +68,24 @@ export async function UserTable() {
                   <div
                     className={cn(
                       "max-w-fit rounded-full px-3.5 py-1 text-sm font-medium",
-                      {
-                        "bg-[#219653]/[0.08] text-[#219653]":
-                          item.status === "Active",
-                        "bg-[#D34053]/[0.08] text-[#D34053]":
-                          item.status === "Inactive",
-                      },
+                      item.status && "bg-[#219653]/8 text-[#219653]",
+                      !item.status && "bg-[#D34053]/8 text-[#D34053]"
+
                     )}
                   >
-                    {item.status}
+                    {item.status ? "Active" : "Inactive"}
                   </div>
                 </TableCell>
 
                 <TableCell>
                   <div>
-                    {item.role}
+                    {item.roleId}
                   </div>
                 </TableCell>
 
                 <TableCell>
                   <p className="text-dark">
-                    {dayjs(item.date).format("MMM DD, YYYY")}
+                    {dayjs(item.createdAt).format("MMM DD, YYYY")}
                   </p>
                 </TableCell>
 

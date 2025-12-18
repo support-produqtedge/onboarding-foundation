@@ -9,14 +9,26 @@ const RoleSchema = (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
       },
-      user_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        unique: true,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      assignedUserIds: {
+        type: DataTypes.JSON,
+        allowNull: true,
+
+        get() {
+          const rawValue = this.getDataValue('assignedUserIds');
+          return rawValue ? JSON.parse(rawValue) : []
+        },
+
+        set(value) {
+          this.setDataValue('assignedUserIds', JSON.stringify(value));
+        }
       }
     },
     {

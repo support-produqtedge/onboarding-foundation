@@ -12,8 +12,21 @@ import { getInvoiceTableData } from "./data";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/components/icons";
 import InputGroup from "@/components/ui/InputGroup";
+import { CreateRoleButton } from "./create-role-button";
 
-export async function RoleTable() {
+interface RoleTableProps {
+  roles: {
+  id: string;
+  name: string;
+  description: string;
+  assignedUserIds: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}[];
+token: string
+}
+
+export async function RoleTable({ roles, token }: RoleTableProps) {
   const data = await getInvoiceTableData();
 
   return (
@@ -23,19 +36,13 @@ export async function RoleTable() {
           <div>
             <input placeholder="Search" className="border"/>
           </div>
-          <Button
-            label="Create Role"
-            variant="dark"
-            size="small"
-            shape="rounded"
-            icon={<PlusIcon />}
-          />
+          <CreateRoleButton token={token} />
         </div>
         <Table>
           <TableHeader>
             <TableRow className="border-none bg-[#F7F9FC] [&>th]:py-4 [&>th]:text-base [&>th]:text-dark ">
               <TableHead>Role</TableHead>
-              <TableHead className="min-w-[155px] xl:pl-7.5">Description</TableHead>
+              <TableHead className="min-w-38.75 xl:pl-7.5">Description</TableHead>
               <TableHead>Assigned Users</TableHead>
               <TableHead>Created Role</TableHead>
               <TableHead className="text-right xl:pr-7.5"></TableHead>
@@ -44,20 +51,20 @@ export async function RoleTable() {
 
           <TableBody>
             {
-              data.map((item, index) => (
-                <TableRow key={index} className="border-[#eee]">
+              roles.map((item, index) => (
+                <TableRow key={item.id} className="border-[#eee]">
                   <TableCell>
                     <h5 className="text-dark font-semibold">{item.name}</h5>
                   </TableCell>
-                  <TableCell className="min-w-[155px] xl:pl-7.5">
+                  <TableCell className="min-w-38.75 xl:pl-7.5">
                     <p className="text-dark">{item.description}</p>
                   </TableCell>
                   <TableCell>
-                    <p className="text-dark">{item.assigned_User}</p>
+                    <p className="text-dark">{item.assignedUserIds.length}</p>
                   </TableCell>
                   <TableCell>
                     <p className="text-dark">
-                      {dayjs(item.created_date).format("MMM DD, YYYY h:mm A")}
+                      {dayjs(item.createdAt).format("MMM DD, YYYY h:mm A")}
                     </p>
                   </TableCell>
                   <TableCell className="xl:pr-7.5">

@@ -28,8 +28,13 @@ const UserSchema = (sequelize: Sequelize) => {
           isEmail: true
         }
       },
+      role_id: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
       verification_status: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       password: {
         type: DataTypes.VIRTUAL,
@@ -44,10 +49,10 @@ const UserSchema = (sequelize: Sequelize) => {
       tableName: 'users',
       timestamps: true,
       hooks: {
-        beforeValidate: async (superAdmin) => {
-          if (superAdmin.password) {
-            superAdmin.password_digest = await bcrypt.hash(
-              superAdmin.password,
+        beforeValidate: async (users) => {
+          if (users.password) {
+            users.password_digest = await bcrypt.hash(
+              users.password,
               10
             )
           }

@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       {
         source: '/api/admin/auth/:path*',
         destination: "http://localhost:3008/api/v1/admin/auth/:path*"
+      },
+      {
+        source: "/api/admin/superadmin/:path*",
+        destination: "http://localhost:3008/api/v1/admin/superadmin/:path*"
       }
     ]
   }
