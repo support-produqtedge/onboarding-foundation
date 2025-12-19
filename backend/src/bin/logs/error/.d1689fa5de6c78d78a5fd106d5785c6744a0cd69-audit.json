@@ -21,9 +21,14 @@
             "hash": "a36890fb94135988dff62a0e2030769ba3c04634c424c765151bd2c449be702b"
         },
         {
-            "date": 1766128307450,
+            "date": 1766027253812,
+            "name": "C:\\Users\\LENOVO\\Documents\\produqtedgeweekgoals\\onboarding-foundation\\backend\\src\\bin\\logs\\error\\2025-12-18.log",
+            "hash": "a196d33fb6a6803ae3c56590e0c8ca0e096c870f4eba111b9c94b3e80c15d55a"
+        },
+        {
+            "date": 1766118737065,
             "name": "C:\\Users\\LENOVO\\Documents\\produqtedgeweekgoals\\onboarding-foundation\\backend\\src\\bin\\logs\\error\\2025-12-19.log",
-            "hash": "8b3538a54ac91837038fc5df89b9082dca6e4f8ac4787a1b23efc997b264e1c3"
+            "hash": "ee9f94fa7847a352dbea6e2fe76c13c60ffc3cf9bb31eba2be779dec818a1c89"
         }
     ],
     "hashType": "sha256"

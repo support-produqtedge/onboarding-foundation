@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run db:init-dev && npm run db:createSuperAdmin-dev && ts-node-dev --respawn --pretty --transpile-only ./src/bin/www",
+    "dev": "ts-node-dev --respawn --pretty --transpile-only ./src/bin/www",
     "start": "node ./build/bin/www",
     "build": "tsc --skipLibCheck",
     "db:init": "node ./build/db/scripts/db_init.js",

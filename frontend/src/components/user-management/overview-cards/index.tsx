@@ -1,26 +1,32 @@
 import { OverviewCard } from "./card";
 
-export async function OverviewCardsGroup() {
+interface OverviewCardsGroupProps {
+  noOfUsers: number;
+  noOfRoles: number;
+  noOfActiveUser: number;
+}
+
+export async function OverviewCardsGroup({noOfUsers, noOfRoles, noOfActiveUser}: OverviewCardsGroupProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 2xl:gap-7.5">
       <OverviewCard
         label="All Users"
         data={{
-          value: 100,
+          value: noOfUsers,
           growthRate: 2.4
         }}
       />
       <OverviewCard
         label="All Roles"
         data={{
-          value: 100,
+          value: noOfRoles,
           growthRate: 6.2
         }}
       />
       <OverviewCard
         label="Active Users"
         data={{
-          value: 100,
+          value: noOfActiveUser,
           growthRate: 0.8
         }}
       />
