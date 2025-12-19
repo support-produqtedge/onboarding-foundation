@@ -22,10 +22,12 @@ router.get("/admin/superadmin", requireSignin, superAdminCtrl.getSuperAdmin);
 const roleCtrl = new RoleController();
 router.post("/admin/superadmin/roles", requireSignin, roleCtrl.createRole);
 router.get("/admin/superadmin/roles", requireSignin, roleCtrl.getRoles);
+router.get("/admin/superadmin/roles/:id", requireSignin, roleCtrl.getRoleById);
 router.put("/admin/superadmin/roles/:roleId", requireSignin, roleCtrl.editRole);
 
 const userCtrl = new UserController();
 router.post("/admin/superadmin/users", requireSignin, userCtrl.createUser);
 router.get("/admin/superadmin/users", requireSignin, userCtrl.getUsers);
+router.get("/admin/superadmin/users/:id", requireSignin, userCtrl.getUserById);
 
 export default router;

@@ -12,7 +12,7 @@ export const Header = () => {
   const { toggleSidebar, isMobile } = useSidebarContext();
 
   return (
-    <header className="sticky top-0 flex items-center justify-between border-b border-slate-300 bg-white px-4 py-5 shadow-1 md:px-5 2xl:px-10">
+    <header className="z-10 top-0 flex items-center justify-between border-b border-slate-300 bg-white px-4 py-5 shadow-1 md:px-5 2xl:px-10">
       <button
         onClick={toggleSidebar}
         className="rounded-lg border px-1.5 py-1 lg:hidden"

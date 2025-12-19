@@ -35,6 +35,20 @@ class UserController {
       next(createHttpError(400));
     }
   }
+
+  public getUserById = async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id;
+    try {
+      const user = await this.userService.getUser(String(userId));
+      if (!user) throw new Error("User not found");
+      res.status(200).json(user);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error))
+      }
+      next(createHttpError(400));
+    }
+  }
 }
 
 export default UserController;
