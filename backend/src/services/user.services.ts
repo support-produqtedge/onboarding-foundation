@@ -66,6 +66,29 @@ class UserService {
       throw new Error(String(error))
     }
   }
+
+  public async getUser(id: string) {
+    try {
+      const user = await this.User.findOne({where: {id}});
+      if (!user) throw new Error("User not found");
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        roleId: user.role_id,
+        status: user.verification_status,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }
+
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
 }
 
 export default UserService;

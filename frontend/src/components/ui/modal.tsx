@@ -33,7 +33,7 @@ export function InfoModal({
       )}
       {...props}
     >
-      <div className="fixed flex items-start gap-3 p-4 w-full max-w-2xl max-h-full z-50 2xl:top-[22%] 2xl:left-[32%] lg:top-[5%] lg:left-[25%]">
+      <div className="fixed flex items-start gap-3 p-4 w-full max-w-2xl max-h-full z-50 2xl:top-[8%] 2xl:left-[32%] lg:top-[5%] lg:left-[25%]">
         {/* <!-- Modal content --> */}
         <div className="relative rounded-xl grow bg-white shadow px-4">
           <div className="p-4 md:p-5">

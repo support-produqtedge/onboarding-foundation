@@ -29,6 +29,19 @@ class RoleController {
     }
   }
 
+  public getRoleById = async (req: Request, res: Response, next: NextFunction) => {
+    const roleId = req.params.id;
+    try {
+      const role = await this.roleService.getRoleById(String(roleId));
+      res.status(200).json(role);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error))
+      }
+      next(createHttpError(400))
+    }
+  }
+
   public editRole = async (req: Request, res: Response, next: NextFunction) => {
     const roleId = req.params.roleId
     try {

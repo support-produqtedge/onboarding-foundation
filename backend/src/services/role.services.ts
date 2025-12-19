@@ -36,6 +36,21 @@ class RoleService {
     }
   }
 
+  public async getRoleById(id: string) {
+    try {
+      const role = await this.Role.findOne({ where: {id}});
+
+      if (!role) throw new Error("Role not found");
+
+      return role;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
   public async updateRole(id: string, name: string, description: string) {
     try {
       const updatedRole = await this.Role.update({

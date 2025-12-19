@@ -17,7 +17,7 @@ const UserManagementPage = async () => {
       <OverviewCardsGroup noOfUsers={noOfUsers} noOfActiveUser={noOfActiveUsers} noOfRoles={noOfRoles} />
       <div className="mt-10">
         <h1 className="text-xl font-semibold">Users</h1>
-        <UserTable users={users} />
+        <UserTable users={users} token={String(token)} />
       </div>
     </div>
   )
