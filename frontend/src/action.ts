@@ -1,5 +1,5 @@
 import z from "zod";
-import { createSession } from "./lib/session";
+import { createSession, deleteSession } from "./lib/session";
 import { redirect } from "next/navigation";
 
 const adminLoginSchema = z.object({
@@ -33,4 +33,9 @@ export async function loginAdmin(prevState: unknown, formData: FormData) {
   const data = await response.json();
   await createSession(data.token);
   redirect("/dashboard");
+}
+
+export async function logout() {
+  await deleteSession();
+  redirect("/admin/login");
 }

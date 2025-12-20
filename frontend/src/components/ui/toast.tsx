@@ -1,0 +1,84 @@
+"use client"
+
+import React from "react";
+import hotToast, { Toaster as HotToaster } from "react-hot-toast";
+import { cn } from "@/lib/utilities";
+
+
+export const Toaster = HotToaster;
+
+interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
+  visible: boolean;
+}
+export function Toast({ visible, className, ...props }: ToastProps) {
+  return (
+    <div
+      className={cn(
+        "min-h-16 mb-2 flex w-[350px] flex-col items-start gap-1 rounded-md bg-white px-6 py-4 shadow-lg",
+        visible && "animate-in slide-in-from-bottom-5",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+interface ToastIconProps extends Partial<React.SVGProps<SVGSVGElement>> {
+  name: string
+}
+Toast.Icon = function ToastIcon({ name, className, ...props }: ToastIconProps) {
+
+  return (
+    <div className="flex h-10 w-10 items-center justify-center">
+      <svg className="w-[90%] h-[90%]" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.96 9.05333L11.24 14.7867L9.04001 12.5867C8.92048 12.4471 8.77339 12.3337 8.60797 12.2537C8.44255 12.1737 8.26237 12.1287 8.07874 12.1216C7.89512 12.1145 7.71201 12.1455 7.54091 12.2125C7.36981 12.2795 7.21441 12.3812 7.08447 12.5111C6.95453 12.6411 6.85286 12.7965 6.78582 12.9676C6.71879 13.1387 6.68785 13.3218 6.69494 13.5054C6.70203 13.689 6.74701 13.8692 6.82704 14.0346C6.90707 14.2 7.02043 14.3471 7.16001 14.4667L10.2933 17.6133C10.4179 17.7369 10.5657 17.8347 10.7281 17.901C10.8906 17.9674 11.0645 18.001 11.24 18C11.5898 17.9985 11.925 17.8597 12.1733 17.6133L18.84 10.9467C18.965 10.8227 19.0642 10.6752 19.1319 10.5128C19.1996 10.3503 19.2344 10.176 19.2344 10C19.2344 9.82398 19.1996 9.64971 19.1319 9.48723C19.0642 9.32475 18.965 9.17728 18.84 9.05333C18.5902 8.805 18.2523 8.66561 17.9 8.66561C17.5478 8.66561 17.2098 8.805 16.96 9.05333ZM13.3333 0C10.6963 0 8.11839 0.781986 5.92574 2.24707C3.73308 3.71216 2.02411 5.79454 1.01495 8.23089C0.00577712 10.6672 -0.258267 13.3481 0.256202 15.9345C0.770672 18.521 2.04055 20.8967 3.90525 22.7614C5.76995 24.6261 8.14572 25.896 10.7321 26.4105C13.3185 26.9249 15.9994 26.6609 18.4358 25.6517C20.8721 24.6426 22.9545 22.9336 24.4196 20.7409C25.8847 18.5483 26.6667 15.9704 26.6667 13.3333C26.6667 11.5824 26.3218 9.84856 25.6517 8.23089C24.9817 6.61321 23.9995 5.14336 22.7614 3.90524C21.5233 2.66713 20.0535 1.685 18.4358 1.01494C16.8181 0.344877 15.0843 0 13.3333 0ZM13.3333 24C11.2237 24 9.16138 23.3744 7.40726 22.2023C5.65313 21.0303 4.28596 19.3644 3.47862 17.4153C2.67129 15.4662 2.46005 13.3215 2.87163 11.2524C3.28321 9.18324 4.29911 7.28262 5.79087 5.79086C7.28263 4.2991 9.18325 3.2832 11.2524 2.87162C13.3215 2.46005 15.4662 2.67128 17.4153 3.47862C19.3644 4.28595 21.0303 5.65313 22.2023 7.40725C23.3744 9.16137 24 11.2237 24 13.3333C24 16.1623 22.8762 18.8754 20.8758 20.8758C18.8754 22.8762 16.1623 24 13.3333 24Z" fill="#6FCF97" />
+      </svg>
+    </div>
+  )
+}
+
+type ToastTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+Toast.Title = function ToastTitle({ className, ...props }: ToastTitleProps) {
+  return <p className={cn("text-sm font-medium", className)} {...props} />
+}
+
+type ToastDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
+Toast.Description = function ToastDescription({ className, ...props }: ToastDescriptionProps) {
+  return <p className={cn("text-sm opacity-80", className)} {...props} />
+}
+
+interface ToastOpts {
+  title?: string;
+  message: string;
+  type?: "success" | "error" | "default";
+  duration?: number;
+}
+export default function toast(opts: ToastOpts) {
+  const { title, message, type = "default", duration = 3000 } = opts
+
+  // alert(message)
+
+  return hotToast.custom(
+    ({ visible }: { visible: boolean }) => (
+      <Toast
+        visible={visible}
+        className={cn({
+          "bg-white text-black": type === "error",
+          "bg-white text-dark": type === "success",
+        })}
+      >
+        <div className="flex items-center gap-2">
+          <div className="max-w-5 max-h-5">
+            <Toast.Icon name="success" className="w-full"/>
+          </div>
+          <div>
+            <Toast.Title>{title}</Toast.Title>
+            {message && <Toast.Description>{message}</Toast.Description>}
+          </div>
+        </div>
+      </Toast>
+    ),
+    { duration }
+  )
+}
+

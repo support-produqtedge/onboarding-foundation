@@ -49,6 +49,29 @@ class UserController {
       next(createHttpError(400));
     }
   }
+
+  public editUser = async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.id;
+    try {
+      const editUser = await this.userService.updateUser(
+        String(userId),
+        req.body.firstName,
+        req.body.lastName,
+        req.body.roleId,
+        req.body.status
+      );
+
+      if (!editUser) throw new Error("Something went wrong");
+      res.status(200).json({
+        message: "Edit successful"
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error));
+      }
+      next(createHttpError(400))
+    }
+  }
 }
 
 export default UserController;

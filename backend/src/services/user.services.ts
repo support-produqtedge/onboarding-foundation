@@ -89,6 +89,29 @@ class UserService {
       throw new Error(String(error));
     }
   }
+
+  public async updateUser(id: string, firstName: string, lastName: string, roleId: string, status: boolean) {
+    try{
+      const updateUser = await this.User.update({
+        firstName,
+        lastName,
+        roleId,
+        verification_status: status
+      }, {
+        where: {id}
+      });
+
+      if (!updateUser || updateUser[0] === 0) throw new Error("User not found");
+
+      return updateUser[0] > 0;
+
+    }catch(error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
 }
 
 export default UserService;
