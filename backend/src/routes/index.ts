@@ -15,9 +15,12 @@ router.get('/', function(req, res, next) {
 
 const authCtrl = new AuthController();
 router.post("/admin/auth/login", authCtrl.loginSuperAdmin);
+router.post("/auth/login", authCtrl.loginUser);
 
 const superAdminCtrl = new SuperAdminController();
 router.get("/admin/superadmin", requireSignin, superAdminCtrl.getSuperAdmin);
+router.get("/auth/verifyEmail", authCtrl.verifyEmail);
+router.post("/auth/change-password/:id", authCtrl.changePassword);
 
 const roleCtrl = new RoleController();
 router.post("/admin/superadmin/roles", requireSignin, roleCtrl.createRole);

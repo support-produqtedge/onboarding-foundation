@@ -7,7 +7,7 @@ class UserController {
 
   public createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await this.userService.createUser(
+      const userKey = await this.userService.createUser(
         req.body.firstName,
         req.body.lastName,
         req.body.email,
@@ -15,7 +15,9 @@ class UserController {
         req.body.status
       );
 
-      res.status(201).json(user);
+      res.status(201).json({
+        key: userKey
+      });
     } catch (error) {
       if (error instanceof Error) {
         next(createHttpError(400, error))
