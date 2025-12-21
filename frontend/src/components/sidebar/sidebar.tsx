@@ -6,9 +6,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-import { ArrowLeftIcon, AuditIcon, ChevronUpDown, DashboardIcon, RoleManagementIcon, UserManagementIcon } from '../icons';
+import { ArrowLeftIcon, AuditIcon, DashboardIcon, RoleManagementIcon, UserManagementIcon } from '../icons';
 import { MenuItem } from "../menu-item";
 import { useSidebarContext } from "./sidebar-context";
+import { ProfileMenuButton } from "./profile-button";
 
 const NAV_DATA = [
   {
@@ -157,7 +158,7 @@ export function Sidebar() {
               <p className="text-sm text-slate-500">jane@doe.com</p>
             </div>
             <div className="ml-auto">
-              <ChevronUpDown />
+              <ProfileMenuButton />
             </div>
           </div>
         </div>

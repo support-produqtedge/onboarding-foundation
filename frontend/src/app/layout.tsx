@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { Toaster } from "@/components/ui/toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextTopLoader color="#F68E1E" showSpinner={false} />
-        <AntdRegistry>
           {children}
-        </AntdRegistry>
+        <Toaster position="top-right" />
       </body>
     </html>
   );

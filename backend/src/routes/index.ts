@@ -32,5 +32,6 @@ const userCtrl = new UserController();
 router.post("/admin/superadmin/users", requireSignin, userCtrl.createUser);
 router.get("/admin/superadmin/users", requireSignin, userCtrl.getUsers);
 router.get("/admin/superadmin/users/:id", requireSignin, userCtrl.getUserById);
+router.put("/admin/superadmin/users/:id", requireSignin, userCtrl.editUser);
 
 export default router;
