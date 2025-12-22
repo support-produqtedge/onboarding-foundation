@@ -15,15 +15,6 @@ export function AdminAuthForm({ className, ...props }: AdminAuthFormProps) {
   })
   const [state, adminLoginAction, isPending] = useActionState(loginAdmin, undefined);
 
-  useEffect(() => {
-    if (typeof state !== 'object') {
-      console.log(state)
-    }
-    return () => {
-
-    }
-  }, [state])
-
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setLoginData({
       ...loginData,

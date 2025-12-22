@@ -3,6 +3,7 @@
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
 import { ViewUser } from "./view-user-modal";
+import toast from "@/components/ui/toast";
 
 interface RoleMenuButtonProps {
   id: string;
@@ -27,7 +28,9 @@ export const UserMenuButton = ({ id, token }: RoleMenuButtonProps) => {
           </div>
         </MenuButton>
       }>
-        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => setViewUserModal(true)}>View</MenuItem>
+        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+          setViewUserModal(true);
+        }}>View</MenuItem>
       </Menu>
     </>
   )

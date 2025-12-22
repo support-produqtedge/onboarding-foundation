@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
+import "@szhsin/react-menu/dist/index.css";
 import { useState } from "react";
 import { ViewRole } from "./view-role-modal";
 import { CreateRoleModal } from "./create-role-modal";
@@ -28,8 +29,8 @@ export const RoleMenuButton = ({ id, token }: RoleMenuButtonProps) => {
           </div>
         </MenuButton>
       }>
-        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => setViewRoleModal(true)}>View</MenuItem>
-        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => setEditRoleModal(true)}>Edit</MenuItem>
+        <MenuItem className="bg-white hover:bg-slate-300 hover:cursor-pointer" onClick={() => setViewRoleModal(true)}>View</MenuItem>
+        <MenuItem className="bg-white hover:bg-slate-300 hover:cursor-pointer" onClick={() => setEditRoleModal(true)}>Edit</MenuItem>
       </Menu>
     </>
   )
