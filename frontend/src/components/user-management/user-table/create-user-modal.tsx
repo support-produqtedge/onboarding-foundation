@@ -108,7 +108,7 @@ export const CreateUserModal = ({ onClose, token }: CreateUserProps) => {
           label="First Name"
           type="text"
           placeholder="Enter first name"
-          className="mb-4.5 [&_input]:py-3.75"
+          className="mb-4.5 [&_input]:py-1.75"
           name="firstName"
           handleChange={handleInputChange}
         />
@@ -116,7 +116,7 @@ export const CreateUserModal = ({ onClose, token }: CreateUserProps) => {
           label="Last Name"
           type="text"
           placeholder="Enter last name"
-          className="mb-4.5 [&_input]:py-3.75"
+          className="mb-4.5 [&_input]:py-1.75"
           name="lastName"
           handleChange={handleInputChange}
         />
@@ -124,7 +124,7 @@ export const CreateUserModal = ({ onClose, token }: CreateUserProps) => {
           label="Email"
           type="email"
           placeholder="Enter email"
-          className="mb-4.5 [&_input]:py-3.75"
+          className="mb-4.5 [&_input]:py-1.75"
           name="email"
           handleChange={handleInputChange}
         />
@@ -136,7 +136,7 @@ export const CreateUserModal = ({ onClose, token }: CreateUserProps) => {
             Role
           </label>
           <div className="relative">
-            <select name="roleId" onChange={handleInputChange} defaultValue={userCred.roleId} className="w-full appearance-none rounded-lg border border-stroke bg-transparent px-5.5 py-3 outline-none transition focus:border-primary active:border-primary [&>option]:text-dark-5">
+            <select name="roleId" onChange={handleInputChange} defaultValue={userCred.roleId} className="w-full appearance-none rounded-lg border border-stroke bg-transparent px-5.5 py-1 outline-none transition focus:border-primary active:border-primary [&>option]:text-dark-5">
               <option value="" disabled hidden>
                 Select Role
               </option>
@@ -160,7 +160,7 @@ export const CreateUserModal = ({ onClose, token }: CreateUserProps) => {
             Status
           </label>
           <div className="relative">
-            <select name="status" onChange={handleInputChange} defaultValue={userCred.status} className="w-full appearance-none rounded-lg border border-stroke bg-transparent px-5.5 py-3 outline-none transition focus:border-primary active:border-primary [&>option]:text-dark-5">
+            <select name="status" onChange={handleInputChange} defaultValue={userCred.status} className="w-full appearance-none rounded-lg border border-stroke bg-transparent px-5.5 py-1 outline-none transition focus:border-primary active:border-primary [&>option]:text-dark-5">
               <option value="" disabled hidden>
                 Select Status
               </option>

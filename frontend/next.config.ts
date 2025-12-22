@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         destination: "http://localhost:3008/api/v1/admin/auth/:path*"
       },
       {
+        source: '/api/auth/:path*',
+        destination: "http://localhost:3008/api/v1/auth/:path*"
+      },
+      {
         source: "/api/admin/superadmin/:path*",
         destination: "http://localhost:3008/api/v1/admin/superadmin/:path*"
       }

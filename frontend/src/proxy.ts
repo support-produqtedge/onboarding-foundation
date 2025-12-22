@@ -3,7 +3,7 @@ import { decrypt, deleteSession } from './lib/session';
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard', '/home'];
-const publicRoutes = ["/admin/login"];
+const publicRoutes = ["/admin/login", "/login"];
 
 export default async function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -15,14 +15,14 @@ export default async function proxy(req: NextRequest) {
     const session = await decrypt(cookie);
 
     if (!session) {
-      return NextResponse.redirect(new URL('/admin/login', req.url))
+      return NextResponse.redirect(new URL('/login', req.url))
     }
     if (session?.exp < Date.now() / 1000) {
       await deleteSession()
-      return NextResponse.redirect(new URL('/admin/login', req.url))
+      return NextResponse.redirect(new URL('/login', req.url))
     }
     if (isProtectedRoute && !session?.id) {
-      return NextResponse.redirect(new URL('/admin/login', req.url))
+      return NextResponse.redirect(new URL('/login', req.url))
     }
 
     if (isPublicRoute && session?.id && !path.startsWith('/dashboard')) {
@@ -40,5 +40,6 @@ export const config = {
     '/dashboard',
     "/home",
     "/admin/:path*",
+    "/login"
   ]
 }
