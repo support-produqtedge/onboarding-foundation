@@ -5,6 +5,7 @@ import { ReactNode, FC } from "react";
 import { Providers } from "../providers";
 import NextTopLoader from "nextjs-toploader";
 import { Header } from "@/components/header";
+import { getAdmin, getSignedUser } from "./services";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -12,19 +13,22 @@ interface DashboardLayoutProps {
 
 const MainLayout: FC<DashboardLayoutProps> = async ({ children }) => {
   const session = await verifySession();
+  let userLoggedin = session.role === "superAdmin" ? await getAdmin(String(session.token)) : await getSignedUser(String(session.token), String(session.id));
 
   if (!session) {
-    redirect("/admin/login");
+    redirect("/login");
   }
+
+  console.log(userLoggedin);
 
   return (
     <Providers>
       <NextTopLoader color="#F68E1E" showSpinner={false} />
       <div className="flex min-h-screen">
-        <Sidebar />
+        <Sidebar name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} email={userLoggedin.email} />
 
         <div className="w-full bg-gray-2">
-          <Header />
+          <Header name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} />
           <main className="isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
             {children}
           </main>

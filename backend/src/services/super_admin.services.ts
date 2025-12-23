@@ -93,6 +93,7 @@ class SuperAdminService {
         id: superAdmin.id,
         firstName: superAdmin.firstName,
         lastName: superAdmin.lastName,
+        email: superAdmin.email,
       }
     } catch (error) {
       if (error instanceof Error) {

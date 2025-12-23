@@ -9,7 +9,7 @@ class AuthService {
   private userLoginToken(userId: string) {
     const dataStoredInToken: { id: string; role: string, sub: string } = {
       id: userId,
-      role: "superAdmin",
+      role: "user",
       sub: "onboarding foundation-login"
     };
     const secretKey: string = String(SECRET_KEY);

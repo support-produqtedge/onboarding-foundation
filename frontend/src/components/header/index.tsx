@@ -7,7 +7,11 @@ import { MenuIcon } from "./icons";
 import { ChevronRight } from "../icons";
 import { usePathname } from "next/navigation";
 
-export const Header = () => {
+interface HeaderProps {
+  name: string;
+}
+
+export const Header = ({ name }: HeaderProps) => {
   const path = usePathname();
   const { toggleSidebar, isMobile } = useSidebarContext();
 
@@ -38,7 +42,7 @@ export const Header = () => {
           <div className="rounded w-[40px] h-[40px] bg-gray-200">
 
           </div>
-          <p className="text-[12px]">Jane Doe</p>
+          <p className="text-[12px]">{name}</p>
           <ChevronRight />
           <p className="text-[12px]">{path.replace(/\//g, "")}</p>
         </div>

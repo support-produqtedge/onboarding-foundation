@@ -1,8 +1,28 @@
 "use client";
 import { ChangeEvent, useState } from "react";
 import InputGroup from "../ui/InputGroup";
+import toast from "../ui/toast";
+import { redirect } from "next/navigation";
 
-export const ChangePasswordForm = () => {
+
+interface ChangePasswordProps {
+  id: string;
+}
+
+const changePassword = async (id: string, password: string) => {
+  const response = await fetch(`/api/auth/change-password/${id}`, {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({password})
+  });
+
+  return await response.json();
+}
+
+export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [passwordChange, setPasswordChange] = useState<{password: string; confirmPassword: string}>({
     password: '',
@@ -20,8 +40,24 @@ export const ChangePasswordForm = () => {
   };
 
   const submitChangePassword = () => {
-    // setIsLoading(true);
-    console.log(passwordChange);
+    setIsLoading(true);
+
+    changePassword(id, passwordChange.password).then(res => {
+      if ("error" in res) {
+        toast({
+          title: "Change Password",
+          message: "Something went wrong",
+          type: "error"
+        })
+      } else {
+        toast({
+          title: "Change Password",
+          message: "Password Changed Successfully",
+          type: "success"
+        });
+        redirect('/');
+      }
+    })
   }
 
   return (

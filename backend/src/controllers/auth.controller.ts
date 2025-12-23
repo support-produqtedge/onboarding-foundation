@@ -3,6 +3,7 @@ import SuperAdminService from "../services/super_admin.services";
 import createHttpError from "http-errors";
 import UserService from "../services/user.services";
 import AuthService from "../services/auth.services";
+import MailService from "../services/mail.services";
 
 class AuthController {
   private readonly superAdminservice = new SuperAdminService();
@@ -36,7 +37,7 @@ class AuthController {
   }
 
   public verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
-    const key = req.query['key']
+    const key = req.query['key'];
     try {
       const user = await this.userService.verifyEmail(String(key));
       res.status(200).json(user);
