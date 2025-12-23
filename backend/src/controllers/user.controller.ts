@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import UserService from "../services/user.services";
+import MailService from "../services/mail.services";
 import createHttpError from "http-errors";
+import { ONBOARDING_FOUNDATION_URL } from "../config";
 
 class UserController {
   private readonly userService = new UserService();
@@ -15,9 +17,24 @@ class UserController {
         req.body.status
       );
 
-      res.status(201).json({
-        key: userKey
+      MailService({
+        subject: "Welcome to Produqtedge",
+        email: req.body.email,
+        html: `
+          <html>
+            <body>
+              <div>Dear ${req.body.firstName} ${req.body.lastName}</div>
+              <div>You have been invited to join your teammates on Produqtedge</div>
+              <div>Please click the link below to activate your account</div>
+              <a>${ONBOARDING_FOUNDATION_URL}/change-password/${userKey.userId}?key=${userKey.key}</a>
+              <div>If you do not recognise this admin, kindly ignore this message</div>
+              <div>Produqtedge Team</div>
+            </body>
+          </html>
+        `
       });
+
+      res.status(201).json(userKey);
     } catch (error) {
       if (error instanceof Error) {
         next(createHttpError(400, error))

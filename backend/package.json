@@ -12,6 +12,7 @@
     "db:createSuperAdmin-dev": "ts-node ./src/db/scripts/super_admin-create.ts"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "bcrypt": "^6.0.0",
     "compression": "^1.8.1",
     "cookie-parser": "~1.4.7",

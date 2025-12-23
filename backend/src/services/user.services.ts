@@ -52,7 +52,10 @@ class UserService {
 
       const registerKey = await this.UserCreationKey(user.id, user.email);
 
-      return registerKey;
+      return {
+        userId: user.id,
+        key: registerKey
+      }
 
     } catch (error) {
       if (error instanceof Error) {

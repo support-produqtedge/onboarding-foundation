@@ -11,6 +11,11 @@ import { MenuItem } from "../menu-item";
 import { useSidebarContext } from "./sidebar-context";
 import { ProfileMenuButton } from "./profile-button";
 
+interface SideBarProps {
+  name: string,
+  email: string,
+}
+
 const NAV_DATA = [
   {
     items: [
@@ -43,7 +48,7 @@ const NAV_DATA = [
 ];
 
 
-export function Sidebar() {
+export function Sidebar({name, email}: SideBarProps) {
   const pathname = usePathname();
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -154,8 +159,8 @@ export function Sidebar() {
           <div className="flex items-center gap-2 border border-slate-300 p-3">
             <div className="rounded-full w-10 h-10 bg-gray-500"></div>
             <div>
-              <h1 className="text-lg font-semibold">Jane Doe</h1>
-              <p className="text-sm text-slate-500">jane@doe.com</p>
+              <h1 className="text-lg font-semibold">{name}</h1>
+              <p className="text-sm text-slate-500">{email}</p>
             </div>
             <div className="ml-auto">
               <ProfileMenuButton />
