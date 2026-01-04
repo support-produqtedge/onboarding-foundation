@@ -6,7 +6,6 @@ import AdminSchema from "./models/admin.model";
 import RoleSchema from "./models/role.model";
 import CompanySchema from "./models/company.model";
 import UserSchema from "./models/user.model";
-import CompanyKYCSchema from "./models/company_kyc.model";
 import VerifyEmailSchema from "./models/verifyEmail.model";
 
 export const sequelize = new Sequelize(`mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
@@ -16,8 +15,6 @@ export const VerifyEmail = VerifyEmailSchema(sequelize);
 export const Role = RoleSchema(sequelize);
 export const Company = CompanySchema(sequelize);
 export const User = UserSchema(sequelize);
-export const CompanyKYC = CompanyKYCSchema(sequelize);
-
 
 const checkConnection = async () => {
   try {

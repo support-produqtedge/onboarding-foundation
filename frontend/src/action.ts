@@ -12,6 +12,19 @@ const userLoginSchema = z.object({
   password: z.string()
 });
 
+const registerUserSchema = z.object({
+  firstName: z.string({ message: "Invalid credentials"}).trim(),
+  lastName: z.string({ message: "Invalid credentials"}).trim(),
+  email: z.email({ message: "Invalid email address" }).trim(),
+  phone: z.string(),
+  password: z.string()
+});
+
+const registerCompanySchema = z.object({
+  name: z.string({ message: "Company name is required" }),
+  cac: z.string({ message: "CAC is required" }),
+  tin: z.string({ message: "TIN is required" })
+})
 
 
 export async function loginAdmin(prevState: unknown, formData: FormData) {
@@ -70,6 +83,60 @@ export async function loginUser(prevState: unknown, formData: FormData) {
   await createSession(data.token);
   redirect("/dashboard");
 }
+
+export async function registerUser(prevState: unknown, formData: FormData) {
+  const registerData = registerUserSchema.safeParse(Object.fromEntries(formData));
+
+  if (!registerData.success) {
+    return {
+      errors: registerData.error.flatten().fieldErrors
+    }
+  }
+  const {firstName, lastName, email, phone, password} = registerData.data;
+
+  const response = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ firstName, lastName, email, phone, password })
+  });
+
+  if (!response.ok) {
+    return (await response.json());
+  } else {
+    redirect("/register-company");
+  }
+}
+
+export async function registerCompany(prevState: unknown, formData: FormData) {
+  const registerData = registerCompanySchema.safeParse(Object.fromEntries(formData));
+
+  if (!registerData.success) {
+    return {
+      errors: registerData.error.flatten().fieldErrors
+    }
+  }
+  const {name, cac, tin} = registerData.data;
+
+  const response = await fetch("/api/auth/register-company", {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, cac, tin })
+  });
+
+  if (!response.ok) {
+    return (await response.json());
+  } else {
+    redirect("/check-email");
+  }
+}
+
+
 
 export async function logout() {
   await deleteSession();

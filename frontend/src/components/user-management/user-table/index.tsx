@@ -17,7 +17,11 @@ interface UserTableProps {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: string;
+  role: {
+    id: string,
+    name: string,
+    description: string
+  }
   status: string;
   createdAt: Date;
   updatedAt: Date
@@ -86,7 +90,7 @@ export async function UserTable({ users, token }: UserTableProps) {
                 <TableCell>
                   <div>
                     {
-
+                      item.role.name
                     }
                   </div>
                 </TableCell>

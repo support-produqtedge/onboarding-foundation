@@ -19,8 +19,6 @@ const MainLayout: FC<DashboardLayoutProps> = async ({ children }) => {
     redirect("/login");
   }
 
-  console.log(userLoggedin);
-
   return (
     <Providers>
       <NextTopLoader color="#F68E1E" showSpinner={false} />

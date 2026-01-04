@@ -3,6 +3,7 @@
 import { ChangeEvent, useActionState, useState } from "react";
 import InputGroup from "../ui/InputGroup";
 import { loginUser } from "@/action";
+import Link from "next/link";
 
 type SignInFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -31,6 +32,10 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
             </h1>
             <p className="text-sm text-gray-500">
               Welcome back! Please enter your details
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Don't have an account? {" "}
+              <Link href="/register" className="font-semibold text-blue-400">Register</Link>
             </p>
           </div>
         </div>

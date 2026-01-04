@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-import { ArrowLeftIcon, AuditIcon, DashboardIcon, RoleManagementIcon, UserManagementIcon } from '../icons';
+import { ArrowLeftIcon, AuditIcon, CompanyManagementIcon, DashboardIcon, RoleManagementIcon, SettingsIcon, UserManagementIcon } from '../icons';
 import { MenuItem } from "../menu-item";
 import { useSidebarContext } from "./sidebar-context";
 import { ProfileMenuButton } from "./profile-button";
@@ -35,6 +35,12 @@ const NAV_DATA = [
         title: "Role Management",
         url: "/role-management",
         icon: <RoleManagementIcon />,
+        items: [],
+      },
+      {
+        title: "Company Management",
+        url: "/company-management",
+        icon: <CompanyManagementIcon />,
         items: [],
       },
       {
@@ -156,14 +162,28 @@ export function Sidebar({name, email}: SideBarProps) {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-2 border border-slate-300 p-3">
-            <div className="rounded-full w-10 h-10 bg-gray-500"></div>
-            <div>
-              <h1 className="text-lg font-semibold">{name}</h1>
-              <p className="text-sm text-slate-500">{email}</p>
-            </div>
-            <div className="ml-auto">
-              <ProfileMenuButton />
+          <div>
+            <nav role="navigation" className="mb-3">
+              <ul className="space-y-2">
+                <li>
+                  <div className={cn("flex items-center w-full gap-3 py-3 rounded-lg px-3.5 font-medium transition-all duration-200 hover:bg-gray-200 hover:text-black",
+                    pathname.includes("/settings") && "bg-[rgba(87,80,241,0.07)] text-primary hover:bg-[rgba(87,80,241,0.07)]"
+                  )}>
+                    <SettingsIcon />
+                    <Link href="/settings">Settings</Link>
+                  </div>
+                </li>
+              </ul>
+            </nav>
+            <div className="flex items-center gap-2 border border-slate-300 p-3">
+              <div className="rounded-full w-10 h-10 bg-gray-500"></div>
+              <div>
+                <h1 className="text-lg font-semibold">{name}</h1>
+                <p className="text-sm text-slate-500">{email}</p>
+              </div>
+              <div className="ml-auto">
+                <ProfileMenuButton />
+              </div>
             </div>
           </div>
         </div>

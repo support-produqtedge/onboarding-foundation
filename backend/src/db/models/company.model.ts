@@ -18,13 +18,14 @@ const CompanySchema = (sequelize: Sequelize) => {
       company_owner: {
         type: DataTypes.UUID
       },
-      user_id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id'
-        }
+      cacRegNo: {
+        type: DataTypes.STRING
+      },
+      tin: {
+        type: DataTypes.STRING
+      },
+      document: {
+        type: DataTypes.STRING
       }
     }, {
       tableName: 'companies',
