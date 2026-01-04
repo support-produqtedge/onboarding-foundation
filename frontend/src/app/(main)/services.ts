@@ -3,6 +3,15 @@ interface UserResponse {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
+  role: {
+    name: string;
+    description: string;
+  },
+  company: {
+    id: string;
+    company_name: string;
+  }
 }
 
 const apiUrl = "http://localhost:3008/api/v1";

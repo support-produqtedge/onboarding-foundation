@@ -1,9 +1,10 @@
+import RegisterForm from "@/components/auth/registerForm";
 import Image from "next/image";
-import SignInForm from "@/components/auth/SigninForm";
 
-const LoginPage = () => {
+
+const RegisterPage = () => {
   return (
-    <div className="relative p-6 bg-white z-1">
+    <div className="relative p-6 z-1">
       <div className="relative flex lg:flex-row w-full h-screen justify-center flex-col">
         <div className="flex flex-col items-center justify-center flex-1 lg:w-1/2 w-full">
           <div className="pb-5">
@@ -15,7 +16,7 @@ const LoginPage = () => {
               className="w-auto h-auto"
             />
           </div>
-          <SignInForm />
+          <RegisterForm />
         </div>
         <div className="lg:w-1/2 w-full h-full bg-gray-300 lg:grid items-center hidden">
           <div className="relative items-center justify-center  flex z-1">
@@ -29,4 +30,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage;
+export default RegisterPage;

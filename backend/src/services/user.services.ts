@@ -1,11 +1,12 @@
 import { sign, verify, JwtPayload } from "jsonwebtoken";
-import { Role, User, VerifyEmail } from "../db";
+import { Company, Role, User, VerifyEmail } from "../db";
 import crypto from "crypto";
 import { hash } from "bcrypt";
 
 class UserService {
   private readonly User = User;
   private readonly Role = Role;
+  private readonly company = Company;
   private readonly registerToken = VerifyEmail;
 
   private async UserCreationKey(id: string, email: string) {
@@ -67,21 +68,38 @@ class UserService {
 
   public async getUsers() {
     try {
-      const users = await this.User.findAll();
 
-      return users.map((user) => {
+      const users = await this.User.findAll();
+      const roles = await this.Role.findAll();
+      const mapRoles = roles.map((r) => {
         return {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          roleId: user.role_id,
-          status: user.verification_status,
-          emailVerified: user.isEmailVerified,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt
-        };
+          id: r.id,
+          name: r.name,
+          description: r.description
+        }
+      });
+
+      const result = users.map((u) => {
+        let role = {};
+        mapRoles.forEach(r => {
+          if (r.id === u.role_id) {
+            role = r;
+          }
+          return role
+        })
+        return {
+          id: u.id,
+          email: u.email,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          phone: u.phone,
+          status: u.verification_status,
+          role: role
+        }
       })
+
+      return result;
+      return users;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message)
@@ -92,14 +110,29 @@ class UserService {
 
   public async getUser(id: string) {
     try {
-      const user = await this.User.findOne({where: {id}});
+      const user = await this.User.findByPk(id);
+      const role = await this.Role.findByPk(user.role_id, {
+        attributes: [
+          "id",
+          "name",
+          "description"
+        ]
+      });
+      const company = await this.company.findByPk(user.companyId, {
+        attributes: [
+          "id",
+          "company_name",
+        ]
+      })
       if (!user) throw new Error("User not found");
       return {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        roleId: user.role_id,
+        phone: user.phone,
+        role: role,
+        company: company || {},
         status: user.verification_status,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
@@ -113,10 +146,28 @@ class UserService {
     }
   }
 
+  public async getUserByEmail(email: string) {
+    try {
+      const user = await this.User.findOne({ where : {email}});
+      if (!user) throw new Error("User not found");
+      return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(String(error));
+    }
+  }
+
   public async verifyEmail(key: string) {
     try {
       const registerUser = await this.registerToken.findOne({ where: {key}});
-      // if (!registerUser) throw new Error("Something went wrong");
+      if (!registerUser) throw new Error("Something went wrong");
       const expiredToken: boolean = (verify(registerUser.registerToken, registerUser.key) as JwtPayload)['exp']! > Date.now() / 1000;
       if (expiredToken && !verify(registerUser.registerToken, registerUser.key)) {
         throw new Error("Registration token expired");
@@ -125,8 +176,9 @@ class UserService {
 
       if (!user) throw new Error("user not found");
       await user.update({
-        isEmailVerified: true
-      })
+        isEmailVerified: true,
+        verification_status: true
+      });
 
       await this.registerToken.destroy({where: {key}});
 

@@ -1,8 +1,9 @@
 import { DataTypes, Sequelize } from "sequelize";
 import bcrypt from "bcrypt";
+import { IUser } from "../interfaces/user.interface";
 
 const UserSchema = (sequelize: Sequelize) => {
-  const User = sequelize.define<any, any>(
+  const User = sequelize.define<any, IUser>(
     'User',
     {
       id: {
@@ -20,6 +21,10 @@ const UserSchema = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -32,9 +37,13 @@ const UserSchema = (sequelize: Sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
+      companyId: {
+        type: DataTypes.UUID,
+        allowNull: true
+      },
       role_id: {
         type: DataTypes.UUID,
-        allowNull: false
+        allowNull: false,
       },
       verification_status: {
         type: DataTypes.BOOLEAN,
@@ -48,7 +57,7 @@ const UserSchema = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'password_digest'
-      }
+      },
     }, {
       tableName: 'users',
       timestamps: true,

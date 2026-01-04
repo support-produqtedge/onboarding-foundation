@@ -1,9 +1,11 @@
 import express from "express";
 import AuthController from "../controllers/auth.controller";
-import { requireSignin } from "../middlewares/auth.middlewar";
+import { emailVerified, requireSignin } from "../middlewares/auth.middlewar";
 import SuperAdminController from "../controllers/super-admin.controller";
 import RoleController from "../controllers/role.controller";
 import UserController from "../controllers/user.controller";
+import KYCController from "../controllers/kyc.controller";
+import { validateKyc } from "../middlewares/kyc.middleware";
 var router = express.Router();
 
 /* GET home page. */
@@ -15,7 +17,9 @@ router.get('/', function(req, res, next) {
 
 const authCtrl = new AuthController();
 router.post("/admin/auth/login", authCtrl.loginSuperAdmin);
-router.post("/auth/login", authCtrl.loginUser);
+router.post("/auth/login", emailVerified, authCtrl.loginUser);
+router.post("/auth/register", authCtrl.registerCompanyOwner);
+router.post("/auth/register-company", validateKyc, authCtrl.registerCompany);
 
 const superAdminCtrl = new SuperAdminController();
 router.get("/admin/superadmin", requireSignin, superAdminCtrl.getSuperAdmin);
@@ -33,5 +37,9 @@ router.post("/admin/superadmin/users", requireSignin, userCtrl.createUser);
 router.get("/admin/superadmin/users", requireSignin, userCtrl.getUsers);
 router.get("/admin/superadmin/users/:id", requireSignin, userCtrl.getUserById);
 router.put("/admin/superadmin/users/:id", requireSignin, userCtrl.editUser);
+
+const kycCtrl = new KYCController();
+router.post("/verify-tin", kycCtrl.verifyTIN);
+router.post("/verify-cac", kycCtrl.verifyCac);
 
 export default router;

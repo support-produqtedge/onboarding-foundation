@@ -2,7 +2,6 @@ import { ChangePasswordForm } from "@/components/auth/ChangePasswordForm";
 import Image from "next/image";
 import { verifyEmail } from './services';
 import { redirect } from "next/navigation";
-import toast from "@/components/ui/toast";
 
 interface Props {
   params: Promise<{userId: string}>;

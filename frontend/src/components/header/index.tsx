@@ -56,6 +56,12 @@ export const Header = ({ name }: HeaderProps) => {
           {
             path === "/role-management" && "Role Management"
           }
+          {
+            path === "/settings" && "Profile"
+          }
+          {
+            path === "/settings/password" && "Password"
+          }
         </h1>
       </div>
 

@@ -17,7 +17,7 @@ class UserController {
         req.body.status
       );
 
-      MailService({
+      /* MailService({
         subject: "Welcome to Produqtedge",
         email: req.body.email,
         html: `
@@ -31,6 +31,30 @@ class UserController {
               <div>Produqtedge Team</div>
             </body>
           </html>
+        `
+      }); */
+      MailService({
+        subject: "Welcome to Produqtedge",
+        email: req.body.email,
+        html: `
+        <html>
+          <body>
+              <table>
+                <tr>
+		              <td style="padding-bottom: 2.5em; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">
+                        <h1 style="font-size: 20px; text-align: center;">Welcome to Produqtedge</h1>
+                        <div style="padding-bottom: 10px">Dear ${req.body.firstName} ${req.body.lastName},</div>
+                        <div style="padding-bottom: 20px;">You have been invited to join your teammates on Produqtedge, Please click the link below to activate your account</div>
+                        <div style="text-align: center; font-weight: 600;">
+                            <a href="${ONBOARDING_FOUNDATION_URL}/change-password/${userKey.userId}?key=${userKey.key}">Link</a>
+                        </div>
+                        <div style="padding-top: 20px;">If you do not recognise this admin, kindly ignore this message</div>
+                        <div style="padding-top: 10px; font-size: 13px;">Produqtedge Team</div>
+		              </td>
+		            </tr>
+              </table>
+          </body>
+        </html>
         `
       });
 

@@ -1,8 +1,9 @@
 import { DataTypes, Sequelize } from "sequelize";
 import bcrypt from "bcrypt";
+import { IAdmin } from "../interfaces/admin.interface";
 
 const AdminSchema = (sequelize: Sequelize) => {
-  const Admin = sequelize.define<any, any>(
+  const Admin = sequelize.define<any, IAdmin>(
     'Admin',
     {
       id: {

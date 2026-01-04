@@ -1,7 +1,8 @@
 import { DataTypes, Sequelize } from "sequelize";
+import { IRole } from "../interfaces/role.interface";
 
 const RoleSchema = (sequelize: Sequelize) => {
-  const Role = sequelize.define(
+  const Role = sequelize.define<any, IRole>(
     'Role',
     {
       id: {
@@ -12,6 +13,9 @@ const RoleSchema = (sequelize: Sequelize) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      company_id: {
+        type: DataTypes.STRING
       },
       description: {
         type: DataTypes.STRING,

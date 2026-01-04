@@ -3,7 +3,11 @@ export interface UserResponse {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: string;
+  role: {
+    id: string;
+    name: string;
+    description: string;
+  };
   status: string;
   createdAt: Date;
   updatedAt: Date

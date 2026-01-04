@@ -14,7 +14,11 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: string;
+  role: {
+    id: string;
+    name: string;
+    description: string;
+  }
   status: string;
   createdAt: Date;
   updatedAt: Date
@@ -38,11 +42,11 @@ export const ViewUser = ({id, token, onClose}: ViewUserProps) => {
           Authorization: `Bearer ${token}`
         }
       });
+
       return await response.json();
     }
     if (!ignore) {
       fetchRole().then(res => {
-        console.log(res);
         setUser(res);
       })
     }
@@ -73,7 +77,7 @@ export const ViewUser = ({id, token, onClose}: ViewUserProps) => {
       </div>
       <div>
         <h1 className="font-semibold">Role: </h1>
-        <h5>{user?.roleId}</h5>
+        <h5>{user?.role.name}</h5>
       </div>
       <div>
         <h1 className="font-semibold">Status: </h1>
