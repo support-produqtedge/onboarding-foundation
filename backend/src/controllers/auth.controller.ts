@@ -39,7 +39,7 @@ class AuthController {
       const companyRegisterKey = await this.authService.createCompany(cookies.user, cookies.role, name, cac, tin, document);
       if (!companyRegisterKey) throw new Error("something went wrong");
 
-      /* MailService({
+      MailService({
         subject: "Welcome to Produqtedge",
         email: user.email,
         html: `
@@ -64,7 +64,7 @@ class AuthController {
                   </body>
               </html>
               `
-      }); */
+      });
 
       res.clearCookie("user");
       res.status(201).json(companyRegisterKey);
