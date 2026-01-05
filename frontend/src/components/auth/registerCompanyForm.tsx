@@ -8,6 +8,29 @@ import toast from "../ui/toast";
 
 type RegisterCompanyProps = React.HTMLAttributes<HTMLDivElement>;
 
+interface MonoCac {
+  status: string;
+  message: string;
+  timestamp: string;
+  data: {
+    rc_number: string;
+    approved_name: string;
+  }
+}
+
+const fetchCac = async (cac: string) => {
+  const response = await fetch("/api/verify-cac", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({cac})
+  })
+  const data = await response.json();
+  return data;
+}
+
 const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
   const [registerCred, setRegisterCred] = useState<{name: string; cac: string; tin: string}>({
     name: "",
@@ -15,12 +38,46 @@ const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
     tin: ''
   });
   const [state, registerCompanyAction, isPending] = useActionState(registerCompany, undefined);
+  const [validateCac, setValidateCac] = useState<MonoCac>({
+    status: "",
+    message: "",
+    timestamp: "",
+    data: {
+      rc_number: "",
+      approved_name: ""
+    }
+  });
+  const [loadingCacData, setLoadingCacData] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRegisterCred({
       ...registerCred,
       [e.target.name]: e.target.value
     })
+  }
+
+  const validateKyc = (e: ChangeEvent<HTMLInputElement>) => {
+      setLoadingCacData(true);
+      fetchCac(registerCred.cac).then(res => {
+        if ("error" in res) {
+          toast({
+            title: "Error",
+            message: "error validating cac, try again",
+            type: "error"
+          })
+        } else {
+          setValidateCac({
+            status: res.status,
+            message: res.message,
+            timestamp: res.timestamp,
+            data: {
+              rc_number: res.data[0].rc_number,
+              approved_name: res.data[0].approved_name
+            }
+          });
+          setLoadingCacData(false);
+        }
+      })
   }
 
   return (
@@ -52,14 +109,24 @@ const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
               name="name"
               handleChange={handleInputChange}
               />
-              <InputGroup
-              label="CAC"
-              className="mb-5 [&_input]:py-[15px]"
-              placeholder="Enter CAC"
-              type="text"
-              name="cac"
-              handleChange={handleInputChange}
-              />
+              <div className="flex flex-col mb-5 [&_input]:py-[15px]">
+                <InputGroup
+                label="CAC"
+                className=""
+                placeholder="Enter CAC"
+                type="text"
+                name="cac"
+                handleChange={handleInputChange}
+                handleBlur={validateKyc}
+                />
+                <div>
+                  {
+                    loadingCacData ? (
+                      <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-black border-t-transparent dark:border-primary dark:border-t-transparent" />
+                    ) : validateCac.data.approved_name
+                  }
+                </div>
+              </div>
               <InputGroup
               label="TIN"
               className="mb-5 [&_input]:py-[15px]"
