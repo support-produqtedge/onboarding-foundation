@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
+        source: "/api/:path*",
+        destination: "http://localhost:3008/api/v1/:path*"
+      },
+      {
         source: '/api/admin/auth/:path*',
         destination: "http://localhost:3008/api/v1/admin/auth/:path*"
       },
