@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import InputGroup from "../ui/InputGroup";
-import { ChangeEvent, useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { registerUser } from "@/action";
 
 type RegisterFormProps = React.HTMLAttributes<HTMLDivElement>;
@@ -24,6 +24,13 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
   });
 
   const [state, registerUserAction, isPending] = useActionState(registerUser, undefined);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (state?.error && state?.error !== error) {
+      setError(state.error)
+    }
+  }, [state]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRegisteUserCred({
@@ -33,7 +40,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
   }
 
   return (
-    <div className="w-[80%]">
+    <div className="w-[80%] pb-10">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
@@ -46,11 +53,11 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
             </p>
           </div>
         </div>
-        <div className="flex w-full gap-1">
+        <div className="flex w-full gap-1 pb-5">
           <div className="bg-black h-1 w-1/2 rounded-2xl"></div>
           <div className="bg-gray-200 h-1 w-1/2 rounded-2xl"></div>
         </div>
-
+        {error && <p className="text-red-600 text-sm text-center -mt-2">{error}</p>}
         <form action={registerUserAction}>
           <div className="space-y-6 mt-2">
             <div>

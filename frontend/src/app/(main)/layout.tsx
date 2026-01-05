@@ -23,7 +23,7 @@ const MainLayout: FC<DashboardLayoutProps> = async ({ children }) => {
     <Providers>
       <NextTopLoader color="#F68E1E" showSpinner={false} />
       <div className="flex min-h-screen">
-        <Sidebar name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} email={userLoggedin.email} />
+        <Sidebar name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} email={userLoggedin.email} role={session.role} />
 
         <div className="w-full bg-gray-2">
           <Header name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} />

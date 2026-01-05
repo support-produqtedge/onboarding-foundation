@@ -4,12 +4,12 @@ import { redirect } from "next/navigation";
 
 const adminLoginSchema = z.object({
   email: z.email({ message: "Invalid email address" }).trim(),
-  password: z.string()
+  password: z.string().min(1, { message: "Invalid login credentials"})
 });
 
 const userLoginSchema = z.object({
-  email: z.email({ message: "Invalid email address" }).trim(),
-  password: z.string()
+  email: z.email({ message: "Invalid login credentials" }).trim(),
+  password: z.string().min(1, { message: "Invalid login credentials"})
 });
 
 const registerUserSchema = z.object({
@@ -21,9 +21,9 @@ const registerUserSchema = z.object({
 });
 
 const registerCompanySchema = z.object({
-  name: z.string({ message: "Company name is required" }),
-  cac: z.string({ message: "CAC is required" }),
-  tin: z.string({ message: "TIN is required" })
+  name: z.string({ message: "Company name is required" }).trim(),
+  cac: z.string({ message: "CAC is required" }).trim(),
+  tin: z.string({ message: "TIN is required" }).trim()
 })
 
 
@@ -31,8 +31,20 @@ export async function loginAdmin(prevState: unknown, formData: FormData) {
   const adminLoginData = adminLoginSchema.safeParse(Object.fromEntries(formData));
 
   if (!adminLoginData.success) {
+    const { fieldErrors } = z.flattenError(adminLoginData.error);
+    if (fieldErrors.email) {
+      return {
+        error: "Invalid login credentials"
+      }
+    }
+
+    if (fieldErrors.password) {
+      return {
+        error: fieldErrors.password[0]
+      }
+    }
     return {
-      errors: adminLoginData.error.flatten().fieldErrors
+      error: "Invalid login credentials"
     }
   }
 
@@ -47,12 +59,16 @@ export async function loginAdmin(prevState: unknown, formData: FormData) {
     body: JSON.stringify({ email, password })
   });
   if (!response.ok) {
-    return (await response.json());
+    return {
+      error: "Invalid login credentials"
+    }
+  } else {
+
+    const data = await response.json();
+    await createSession(data.token);
+    redirect("/dashboard");
   }
 
-  const data = await response.json();
-  await createSession(data.token);
-  redirect("/dashboard");
 }
 
 export async function loginUser(prevState: unknown, formData: FormData) {
@@ -104,7 +120,9 @@ export async function registerUser(prevState: unknown, formData: FormData) {
   });
 
   if (!response.ok) {
-    return (await response.json());
+    return {
+      error: "Email already used"
+    }
   } else {
     redirect("/register-company");
   }
@@ -114,8 +132,14 @@ export async function registerCompany(prevState: unknown, formData: FormData) {
   const registerData = registerCompanySchema.safeParse(Object.fromEntries(formData));
 
   if (!registerData.success) {
+    const {fieldErrors} = z.flattenError(registerData.error);
+    if (fieldErrors.name) {
+      return {
+        error: "Company name is required"
+      }
+    }
     return {
-      errors: registerData.error.flatten().fieldErrors
+      error: "Invalid credentials"
     }
   }
   const {name, cac, tin} = registerData.data;
@@ -130,7 +154,9 @@ export async function registerCompany(prevState: unknown, formData: FormData) {
   });
 
   if (!response.ok) {
-    return (await response.json());
+    return {
+      error: "Invalid credentials"
+    }
   } else {
     redirect("/check-email");
   }
