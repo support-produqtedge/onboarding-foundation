@@ -14,6 +14,7 @@ import { ProfileMenuButton } from "./profile-button";
 interface SideBarProps {
   name: string,
   email: string,
+  role: string,
 }
 
 const NAV_DATA = [
@@ -24,37 +25,44 @@ const NAV_DATA = [
         url: "/dashboard",
         icon: <DashboardIcon />,
         items: [],
+        access: ["superAdmin", "user"]
       },
       {
         title: "User Management",
         url: "/user-management",
         icon: <UserManagementIcon />,
         items: [],
+        access: ["superAdmin", "user"]
       },
       {
         title: "Role Management",
         url: "/role-management",
         icon: <RoleManagementIcon />,
         items: [],
+        access: ["superAdmin", "user"]
       },
       {
         title: "Company Management",
         url: "/company-management",
         icon: <CompanyManagementIcon />,
         items: [],
+        access: ["superAdmin"]
       },
       {
         title: "Audit Logs",
         url: "/audit-logs",
         icon: <AuditIcon />,
         items: [],
+        access: ["superAdmin"]
       }
     ],
   },
 ];
 
 
-export function Sidebar({name, email}: SideBarProps) {
+
+
+export function Sidebar({name, email, role}: SideBarProps) {
   const pathname = usePathname();
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -119,6 +127,8 @@ export function Sidebar({name, email}: SideBarProps) {
                 <nav role="navigation" >
                   <ul className="space-y-2">
                     {section.items.map((item, i) => (
+                      (
+                        item.access.includes(role) &&
                       <li key={String(item) + i}>
                         {item.items.length ? (
                           <div>
@@ -156,6 +166,7 @@ export function Sidebar({name, email}: SideBarProps) {
                           })()
                         )}
                       </li>
+                      )
                     ))}
                   </ul>
                 </nav>

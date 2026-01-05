@@ -7,7 +7,7 @@ import { verifySession } from "@/dal";
 const SettingsPage = async () => {
   const { token, id } = await verifySession();
   const user = await getSignedUser(token!, id);
-  console.log(user);
+
   return (
     <>
       <div>
