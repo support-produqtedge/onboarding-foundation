@@ -21,7 +21,7 @@ const registerUserSchema = z.object({
 });
 
 const registerCompanySchema = z.object({
-  name: z.string({ message: "Company name is required" }).trim(),
+  name: z.string({ message: "Company name is required" }).min(1, {message: "Company name is required."}),
   cac: z.string({ message: "CAC is required" }).trim(),
   tin: z.string({ message: "TIN is required" }).trim()
 })
@@ -135,7 +135,7 @@ export async function registerCompany(prevState: unknown, formData: FormData) {
     const {fieldErrors} = z.flattenError(registerData.error);
     if (fieldErrors.name) {
       return {
-        error: "Company name is required"
+        error: fieldErrors.name[0]
       }
     }
     return {

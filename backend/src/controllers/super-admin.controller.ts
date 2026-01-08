@@ -20,6 +20,19 @@ class SuperAdminController {
       next(createHttpError(401));
     }
   }
+
+  public getUsersByCompany = async (req: Request, res: Response, next: NextFunction) => {
+    const companyId = req.params["companyId"]
+    try {
+      const users = await this.superAdminservice.getUserByCompany(String(companyId));
+      res.status(200).json(users);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(401, error));
+      }
+      next(createHttpError(401));
+    }
+  }
 }
 
 export default SuperAdminController;

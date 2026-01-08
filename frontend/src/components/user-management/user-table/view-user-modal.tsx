@@ -34,7 +34,7 @@ export const ViewUser = ({id, token, onClose}: ViewUserProps) => {
   useEffect(() => {
     let ignore = false;
     async function fetchRole() {
-      const response = await fetch(`/api/admin/superadmin/users/${id}`, {
+      const response = await fetch(`/api/users/${id}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -67,7 +67,7 @@ export const ViewUser = ({id, token, onClose}: ViewUserProps) => {
         <h1 className="font-semibold">First Name: </h1>
         <h5>{user?.firstName}</h5>
       </div>
-      <div className="font-semibold">
+      <div>
         <h1 className="font-semibold">Last Name: </h1>
         <h5>{user?.lastName}</h5>
       </div>

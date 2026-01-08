@@ -2,12 +2,14 @@ import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { Company, Role, User, VerifyEmail } from "../db";
 import crypto from "crypto";
 import { hash } from "bcrypt";
+import AuditLogsService from "./auditLogs.services";
 
 class UserService {
   private readonly User = User;
   private readonly Role = Role;
   private readonly company = Company;
   private readonly registerToken = VerifyEmail;
+  private readonly auditLogsService = new AuditLogsService();
 
   private async UserCreationKey(id: string, email: string) {
     const dataStoreInToken: {id: string, sub: string} = {
@@ -30,14 +32,15 @@ class UserService {
 
   }
 
-  public async createUser(firstName: string, lastName: string, email: string, roleId: string, status: boolean) {
+  public async createUser(firstName: string, lastName: string, email: string, phone: string, roleId: string, companyId: string) {
     try {
       const user = await this.User.create({
         firstName,
         lastName,
         email,
+        phone,
         role_id: roleId,
-        verification_status: status
+        companyId,
       });
 
       if (!user) throw new Error("Something went wrong");
@@ -93,13 +96,13 @@ class UserService {
           firstName: u.firstName,
           lastName: u.lastName,
           phone: u.phone,
+          isEmailVerified: u.isEmailVerified,
           status: u.verification_status,
           role: role
         }
       })
 
       return result;
-      return users;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message)
@@ -133,6 +136,7 @@ class UserService {
         phone: user.phone,
         role: role,
         company: company || {},
+        isEmailVerified: user.isEmailVerified,
         status: user.verification_status,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt
@@ -143,6 +147,48 @@ class UserService {
         throw new Error(error.message);
       }
       throw new Error(String(error));
+    }
+  }
+
+  public async getUserByCompanyId(companyId: string) {
+    try {
+      const users = await this.User.findAll({where: {companyId}});
+      const roles = await this.Role.findAll();
+      const mapRoles = roles.map((r) => {
+        return {
+          id: r.id,
+          name: r.name,
+          description: r.description
+        }
+      });
+
+      const result = users.map((u) => {
+        let role = {};
+        mapRoles.forEach(r => {
+          if (r.id === u.role_id) {
+            role = r;
+          }
+          return role
+        })
+        return {
+          id: u.id,
+          email: u.email,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          phone: u.phone,
+          isEmailVerified: u.isEmailVerified,
+          status: u.verification_status,
+          role: role
+        }
+      })
+
+      return result;
+
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(String(error))
     }
   }
 
@@ -208,13 +254,13 @@ class UserService {
       throw new Error(String(error));
     }}
 
-  public async updateUser(id: string, firstName: string, lastName: string, roleId: string, status: boolean) {
+  public async updateUser(id: string, firstName: string, lastName: string, phone: string, roleId: string) {
     try{
       const updateUser = await this.User.update({
         firstName,
         lastName,
+        phone,
         roleId,
-        verification_status: status
       }, {
         where: {id}
       });
@@ -226,6 +272,34 @@ class UserService {
     }catch(error) {
       if (error instanceof Error) {
         throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
+  public async activateDeactivateUser(id: string) {
+    try {
+      const user = await this.User.findByPk(id);
+      if (!user) throw new Error("User not found");
+      if (!user.isEmailVerified) throw new Error("User email not verified, action invalid");
+
+      if (user.verification_status) {
+        const updatedUser = await user.update({
+          verification_status: false
+        });
+
+        return updatedUser;
+      } else {
+        const updatedUser = await user.update({
+          verification_status: true
+        });
+
+        return updatedUser;
+      }
+
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
       }
       throw new Error(String(error));
     }

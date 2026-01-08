@@ -17,16 +17,19 @@ interface UserTableProps {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   role: {
     id: string,
     name: string,
     description: string
-  }
+  },
+  isEmailVerified: boolean;
   status: string;
   createdAt: Date;
   updatedAt: Date
 }[];
 token: string;
+companyId: string;
 }
 
 const getRole = async (token: string, roleId: string) => {
@@ -42,7 +45,7 @@ const getRole = async (token: string, roleId: string) => {
   return await response.json()
 }
 
-export async function UserTable({ users, token }: UserTableProps) {
+export async function UserTable({ users, token, companyId }: UserTableProps) {
 
   return (
     <>
@@ -51,12 +54,13 @@ export async function UserTable({ users, token }: UserTableProps) {
           <div>
             <input placeholder="Search" className="border"/>
           </div>
-          <CreateUserButton token={token} />
+          <CreateUserButton token={token} companyId={companyId} />
         </div>
         <Table>
           <TableHeader>
             <TableRow className="border-none bg-[#F7F9FC] [&>th]:py-4 [&>th]:text-base [&>th]:text-dark ">
               <TableHead className="min-w-38.75 xl:pl-7.5">Users</TableHead>
+              <TableHead>Phone</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Last Login</TableHead>
@@ -75,15 +79,21 @@ export async function UserTable({ users, token }: UserTableProps) {
                 </TableCell>
 
                 <TableCell>
+                  <div>
+                    {item.phone ? item.phone : "-"}
+                  </div>
+                </TableCell>
+                <TableCell>
                   <div
                     className={cn(
                       "max-w-fit rounded-full px-3.5 py-1 text-sm font-medium",
+                      !item.isEmailVerified && "bg-red-800",
                       item.status && "bg-[#219653]/8 text-[#219653]",
                       !item.status && "bg-[#D34053]/8 text-[#D34053]"
 
                     )}
                   >
-                    {item.status ? "Active" : "Inactive"}
+                    {!item.isEmailVerified ? "Inactive" : (item.status ? "Active" : "Deactivated")}
                   </div>
                 </TableCell>
 
@@ -103,7 +113,7 @@ export async function UserTable({ users, token }: UserTableProps) {
 
 
                 <TableCell className="xl:pr-7.5">
-                    <UserMenuButton token={token} id={item.id} />
+                  <UserMenuButton token={token} id={item.id} companyId={companyId} status={item.status} />
                 </TableCell>
               </TableRow>
             ))}

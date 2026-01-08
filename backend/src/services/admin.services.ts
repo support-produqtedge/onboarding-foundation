@@ -1,5 +1,5 @@
-import { Admin } from "../db";
+import { Admin, Role, User } from "../db";
 
 class AdminService {
-  private readonly Admin = Admin
+
 }

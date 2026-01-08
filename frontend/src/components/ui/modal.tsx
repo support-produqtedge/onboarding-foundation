@@ -35,7 +35,7 @@ export function InfoModal({
     >
       <div className="fixed flex items-start gap-3 p-4 w-full max-w-2xl max-h-full z-50 2xl:top-[8%] 2xl:left-[32%] lg:top-[5%] lg:left-[25%]">
         {/* <!-- Modal content --> */}
-        <div className="relative rounded-xl grow bg-white shadow px-4">
+        <div className="rounded-xl grow bg-white shadow px-4">
           <div className="p-4 md:p-5">
             <h3 className="text-3xl text-gray-900 font-semibold">{title}</h3>
             <div>
@@ -45,7 +45,7 @@ export function InfoModal({
             </div>
           </div>
           {/* <!-- Modal body --> */}
-          <div className="p-4 md:p-5 space-y-4">{children}</div>
+          <div className="max-h-[60vh] p-4 overflow-y-scroll md:p-5 space-y-4">{children}</div>
           {/* <!-- Modal footer --> */}
           <div className="flex items-center p-4 md:p-5">
             {/* <button data-modal-hide="default-modal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" disabled={disabled}

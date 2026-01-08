@@ -21,10 +21,11 @@ interface RoleTableProps {
   createdAt: Date;
   updatedAt: Date;
 }[];
-token: string
+token: string;
+companyId: string;
 }
 
-export async function RoleTable({ roles, token }: RoleTableProps) {
+export async function RoleTable({ roles, token, companyId }: RoleTableProps) {
   const data = await getInvoiceTableData();
 
   return (
@@ -66,7 +67,7 @@ export async function RoleTable({ roles, token }: RoleTableProps) {
                     </p>
                   </TableCell>
                   <TableCell className="xl:pr-7.5">
-                    <RoleMenuButton id={item.id} token={token} />
+                    <RoleMenuButton companyId={companyId} id={item.id} token={token} />
                 </TableCell>
                 </TableRow>
               ))

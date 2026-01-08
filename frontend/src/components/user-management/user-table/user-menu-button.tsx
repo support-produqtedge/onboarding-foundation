@@ -4,19 +4,26 @@ import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
 import { ViewUser } from "./view-user-modal";
 import toast from "@/components/ui/toast";
+import UserToggleStatusModal from "./user-status-modal";
+import { CreateUserModal } from "./create-user-modal";
 
 interface RoleMenuButtonProps {
   id: string;
-  token: string
+  token: string;
+  companyId: string;
+  status: string;
 }
 
-export const UserMenuButton = ({ id, token }: RoleMenuButtonProps) => {
+export const UserMenuButton = ({ id, token, companyId, status }: RoleMenuButtonProps) => {
   const [viewUserModal, setViewUserModal] = useState(false);
+  const [statusModal, setStatusModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
+
   return (
     <>
     {viewUserModal && <ViewUser onClose={() => setViewUserModal(false)} id={id} token={token} />}
-      {/* {editRoleModal && <CreateRoleModal edit id={id} token={token} onClose={() => setEditRoleModal(false)} />} */}
+      {statusModal && <UserToggleStatusModal onClose={() => setStatusModal(false)} status={status} id={id} token={token} />}
+      {editRoleModal && <CreateUserModal edit id={id} token={token} onClose={() => setEditRoleModal(false)} companyId={companyId} />}
       <Menu menuButton={
         <MenuButton>
           <div className="flex items-center justify-end gap-x-3.5">
@@ -31,6 +38,12 @@ export const UserMenuButton = ({ id, token }: RoleMenuButtonProps) => {
         <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
           setViewUserModal(true);
         }}>View</MenuItem>
+        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+           setEditRoleModal(true);
+         }}>Edit</MenuItem>
+        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+          setStatusModal(true);
+        }}>{status ? 'Deactivate' : 'Activate'}</MenuItem>
       </Menu>
     </>
   )

@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 
 interface UserSession {
   id: string;
+  companyId?: string;
   role: string;
   email: string;
   exp: number;

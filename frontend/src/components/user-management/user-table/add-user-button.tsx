@@ -7,14 +7,15 @@ import { CreateUserModal } from "./create-user-modal";
 
 interface CreateUserModalProps {
   token: string;
+  companyId: string;
 }
 
-export const CreateUserButton = ({ token }: CreateUserModalProps) => {
+export const CreateUserButton = ({ token, companyId }: CreateUserModalProps) => {
   const [modal, setModal] = useState(false);
 
   return (
     <>
-      {modal && <CreateUserModal token={token} onClose={() => setModal(false)} />}
+      {modal && <CreateUserModal token={token} companyId={companyId} onClose={() => setModal(false)} />}
       <Button
         label="Create User"
         variant="dark"

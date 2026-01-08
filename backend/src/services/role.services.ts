@@ -1,12 +1,12 @@
-import { Role } from "../db";
+import { Company, Role } from "../db";
 
 class RoleService {
   private readonly Role = Role;
 
-  public async createRole(name: string, description?: string) {
+  public async createRole(name: string, companyId: string, description?: string,) {
     try {
       const role = await this.Role.create({
-        name, description
+        name, description, company_id: companyId
       });
 
       if (!role) {
@@ -65,6 +65,19 @@ class RoleService {
       if (!updatedRole || updatedRole[0] === 0) throw new Error("Role not found");
 
       return updatedRole[0] > 0
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      }
+      throw new Error(String(error));
+    }
+  }
+
+  public async getRoleByCompanyId(id: string) {
+    try {
+      const rolesByCompany = await this.Role.findAll({ where: {company_id: id}});
+
+      return rolesByCompany;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message)

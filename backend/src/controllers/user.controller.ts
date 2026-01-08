@@ -1,20 +1,23 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import UserService from "../services/user.services";
 import MailService from "../services/mail.services";
 import createHttpError from "http-errors";
 import { ONBOARDING_FOUNDATION_URL } from "../config";
+import { CustomRequest } from "../types/customRequest";
 
 class UserController {
   private readonly userService = new UserService();
 
-  public createUser = async (req: Request, res: Response, next: NextFunction) => {
+  public createUser = async (expressRequest: Request, res: Response, next: NextFunction) => {
+    const req = expressRequest as CustomRequest;
     try {
       const userKey = await this.userService.createUser(
         req.body.firstName,
         req.body.lastName,
         req.body.email,
+        req.body.phone,
         req.body.roleId,
-        req.body.status
+        String(req.auth.companyId)
       );
 
       /* MailService({
@@ -79,6 +82,19 @@ class UserController {
     }
   }
 
+  public getUsersByCompany = async (expressRequest: Request, res: Response, next: NextFunction) => {
+    const req = expressRequest as CustomRequest;
+    try {
+      const users = await this.userService.getUserByCompanyId(String(req.auth.companyId));
+      res.status(200).json(users);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error))
+      }
+      next(createHttpError(400))
+    }
+  }
+
   public getUserById = async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id;
     try {
@@ -100,8 +116,8 @@ class UserController {
         String(userId),
         req.body.firstName,
         req.body.lastName,
+        req.body.phone,
         req.body.roleId,
-        req.body.status
       );
 
       if (!editUser) throw new Error("Something went wrong");
@@ -113,6 +129,20 @@ class UserController {
         next(createHttpError(400, error));
       }
       next(createHttpError(400))
+    }
+  }
+
+  public activateDeactivate = async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params["id"];
+    try {
+      const updatedUser = await this.userService.activateDeactivateUser(String(userId));
+
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error));
+      }
+      next(createHttpError(400));
     }
   }
 }

@@ -8,16 +8,17 @@ import { CreateRoleModal } from "./create-role-modal";
 
 interface RoleMenuButtonProps {
   id: string;
-  token: string
+  token: string;
+  companyId: string;
 }
 
-export const RoleMenuButton = ({ id, token }: RoleMenuButtonProps) => {
+export const RoleMenuButton = ({ id, token, companyId }: RoleMenuButtonProps) => {
   const [viewRoleModal, setViewRoleModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
   return (
     <>
     {viewRoleModal && <ViewRole onClose={() => setViewRoleModal(false)} id={id} token={token} />}
-      {editRoleModal && <CreateRoleModal edit id={id} token={token} onClose={() => setEditRoleModal(false)} />}
+      {editRoleModal && <CreateRoleModal edit companyId={companyId} id={id} token={token} onClose={() => setEditRoleModal(false)} />}
       <Menu menuButton={
         <MenuButton>
           <div className="flex items-center justify-end gap-x-3.5">
