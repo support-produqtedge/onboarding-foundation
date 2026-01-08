@@ -1,11 +1,13 @@
 import bcrypt, { compare } from 'bcrypt';
 import _ from "lodash";
-import { SuperAdmin } from '../db/index';
+import { Role, SuperAdmin, User } from '../db/index';
 import { SECRET_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
 
 class SuperAdminService {
   private readonly SuperAdmin = SuperAdmin;
+  private readonly User = User;
+  private readonly Role = Role;
 
   public async createOrUpdate(firstName: string, lastName: string, email: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -95,6 +97,46 @@ class SuperAdminService {
         lastName: superAdmin.lastName,
         email: superAdmin.email,
       }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
+  public async getUserByCompany(companyId: string) {
+    try {
+      const users = await this.User.findAll({where: {companyId}});
+      const roles = await this.Role.findAll();
+      const mapRoles = roles.map((r) => {
+        return {
+          id: r.id,
+          name: r.name,
+          description: r.description
+        }
+      });
+
+      const result = users.map((u) => {
+        let role = {};
+        mapRoles.forEach(r => {
+          if (r.id === u.role_id) {
+            role = r;
+          }
+          return role
+        })
+        return {
+          id: u.id,
+          email: u.email,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          phone: u.phone,
+          status: u.verification_status,
+          role: role
+        }
+      })
+
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

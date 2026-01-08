@@ -15,6 +15,7 @@ interface SideBarProps {
   name: string,
   email: string,
   role: string,
+  company?: string;
 }
 
 const NAV_DATA = [
@@ -39,7 +40,7 @@ const NAV_DATA = [
         url: "/role-management",
         icon: <RoleManagementIcon />,
         items: [],
-        access: ["superAdmin", "user"]
+        access: ["user"]
       },
       {
         title: "Company Management",
@@ -62,7 +63,7 @@ const NAV_DATA = [
 
 
 
-export function Sidebar({name, email, role}: SideBarProps) {
+export function Sidebar({name, email, role, company}: SideBarProps) {
   const pathname = usePathname();
   const { setIsOpen, isOpen, isMobile, toggleSidebar } = useSidebarContext();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -106,6 +107,9 @@ export function Sidebar({name, email, role}: SideBarProps) {
             >
               <Logo />
             </Link>
+            <div>
+              <h1>Company: {company}</h1>
+            </div>
 
             {isMobile && (
               <button

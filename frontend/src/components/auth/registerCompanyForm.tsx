@@ -227,7 +227,7 @@ const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
             <button
               type="submit"
               className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
-              disabled={isPending || !!tinError || !!cacError}
+              disabled={isPending || !!tinError || !!cacError || registerCred.name === "" || registerCred.cac === "" || registerCred.tin == ""}
             >
               <span className="inline-block pr-2">Submit</span>
               {isPending && (

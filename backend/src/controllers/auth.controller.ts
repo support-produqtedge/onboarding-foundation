@@ -4,15 +4,14 @@ import createHttpError from "http-errors";
 import UserService from "../services/user.services";
 import AuthService from "../services/auth.services";
 import MailService from "../services/mail.services";
-import CompanyService from "../services/company.services";
 import { ONBOARDING_FOUNDATION_URL } from "../config";
-import MonoServices from "../services/mono.services";
+import AuditLogsService from "../services/auditLogs.services";
 
 class AuthController {
   private readonly superAdminservice = new SuperAdminService();
   private readonly authService = new AuthService();
   private readonly userService = new UserService();
-  private readonly monoServices = new MonoServices();
+  private readonly auditlogService = new AuditLogsService();
 
   public registerCompanyOwner = async (req: Request, res: Response, next: NextFunction) => {
     const { firstName, lastName, email, phone, password } = req.body;

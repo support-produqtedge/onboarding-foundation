@@ -35,7 +35,7 @@ export const getAdmin = async (token: string): Promise<UserResponse> => {
 
 export const getSignedUser = async (token: string, id: string): Promise<UserResponse> => {
   try {
-    const response = await fetch(`${apiUrl}/admin/superadmin/users/${id}`, {
+    const response = await fetch(`${apiUrl}/users/${id}`, {
       method: "GET",
       headers: {
         "Accept": "application/json",
@@ -49,4 +49,3 @@ export const getSignedUser = async (token: string, id: string): Promise<UserResp
     throw new Error(String(error));
   }
 }
-

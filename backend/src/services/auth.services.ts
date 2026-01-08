@@ -1,14 +1,16 @@
 import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { SECRET_KEY } from "../config";
-import { Company, Role, User, VerifyEmail } from "../db";
+import { AuditLogs, Company, Role, User, VerifyEmail } from "../db";
 import { compare, hash } from "bcrypt";
 import crypto from 'crypto';
+import AuditLogsService from "./auditLogs.services";
 
 class AuthService {
   private readonly user = User;
   private readonly role = Role;
   private readonly company = Company;
   private readonly registerToken = VerifyEmail;
+  private readonly auditLogsService = new AuditLogsService();
 
   private async CompanyOwnerCreationKey(id: string, email: string) {
     const dataStoreInToken: { id: string, sub: string } = {
@@ -76,10 +78,13 @@ class AuthService {
       });
       await role.update({
         company_id: company.id,
-        description: `Owner of the company: ${name}`
+        description: `Owner of the company: ${name}`,
+        assignedUserIds: [user.id]
       });
 
-      const registerKey = await this.CompanyOwnerCreationKey(user.id, user.email)
+      const registerKey = await this.CompanyOwnerCreationKey(user.id, user.email);
+
+      await this.auditLogsService.createLog(`${user.firstname} ${user.lastName}`, "Company Creation", "User created a new company");
 
       return {
         email: user.email,
@@ -94,9 +99,10 @@ class AuthService {
   }
 
 
-  private userLoginToken(userId: string) {
-    const dataStoredInToken: { id: string; role: string, sub: string } = {
+  private userLoginToken(userId: string, companyId: string) {
+    const dataStoredInToken: { id: string; companyId: string, role: string, sub: string } = {
       id: userId,
+      companyId,
       role: "user",
       sub: "onboarding foundation-login"
     };
@@ -113,7 +119,8 @@ class AuthService {
 
       const isValidPassword = await compare(password, user.password_digest);
       if (!isValidPassword) throw new Error("Invalid Credentials");
-      const tokenData = await this.userLoginToken(user.id);
+      const tokenData = await this.userLoginToken(user.id, user.companyId);
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Login", "User Logged In")
       return tokenData;
     } catch (error) {
       if (error instanceof Error) {
@@ -140,7 +147,7 @@ class AuthService {
       })
 
       await this.registerToken.destroy({ where: { key } });
-
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Email Verification", "User email verified");
       return user;
     } catch (error) {
       if (error instanceof Error) {

@@ -1,6 +1,7 @@
 import InputGroup from "@/components/ui/InputGroup";
 import { InfoModal } from "@/components/ui/modal"
 import { TextAreaGroup } from "@/components/ui/text-area";
+import toast from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect } from 'react';
 
@@ -9,9 +10,10 @@ interface CreateRoleProps {
   token: string;
   edit?: boolean;
   id?: string;
+  companyId: string;
 }
 
-const addRole = async(token: string, request: {name: string, description: string}) => {
+const addRole = async(token: string, request: {name: string, companyId: string; description: string}) => {
   try {
     const response = await fetch("/api/admin/superadmin/roles", {
       method: "POST",
@@ -29,7 +31,7 @@ const addRole = async(token: string, request: {name: string, description: string
   }
 }
 
-const editRole = async(token: string, id: string, request: {name: string, description: string}) => {
+const editRole = async(token: string, id: string, request: {name: string, companyId: string, description: string}) => {
   try {
     const response = await fetch(`/api/admin/superadmin/roles/${id}`, {
       method: "PUT",
@@ -47,17 +49,18 @@ const editRole = async(token: string, id: string, request: {name: string, descri
   }
 }
 
-export const CreateRoleModal = ({ onClose, token, edit, id }: CreateRoleProps) => {
+export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateRoleProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [role, setRole] = useState<{name: string, description: string}>({
     name: "",
-    description: ''
+    description: '',
   })
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
-  const [roleCred, setRoleCred] = useState<{name: string, description: string}>({
+  const [roleCred, setRoleCred] = useState<{name: string, companyId: string, description: string}>({
     name: role.name || '',
-    description: role.description || ''
+    description: role.description || '',
+    companyId,
   });
 
   useEffect(() => {
@@ -80,7 +83,6 @@ export const CreateRoleModal = ({ onClose, token, edit, id }: CreateRoleProps) =
       }
       if (!ignore) {
         fetchRole().then(res => {
-          console.log(res);
           setRole(res);
         })
       }
@@ -115,9 +117,16 @@ export const CreateRoleModal = ({ onClose, token, edit, id }: CreateRoleProps) =
     } else {
       editRole(token, String(id), roleCred).then(res => {
         if ("error" in res) {
-          console.log(res.error);
           setIsLoading(false);
+          toast({
+            message: res.error,
+            type: "error"
+          })
         } else {
+          toast({
+            message: "Role updated",
+            type: "success"
+          });
           setIsLoading(false);
           onClose();
           router.refresh()
