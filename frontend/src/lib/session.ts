@@ -29,19 +29,16 @@ export async function createSession(token: string) {
 }
 
 export async function deleteSession() {
-  (await cookies()).delete("session")
+  (await cookies()).delete("session");
 }
 
 export async function decrypt(session: string | undefined = '') {
   try {
-    /* const {payload} = await jwtVerify<UserSession>(session, encodedKey, {
-      algorithms: ["HS256"]
-    }); */
     const payload = jwtDecode<UserSession>(session);
     return payload;
   } catch (error) {
     if (error instanceof Error) {
-      redirect('/admin/login')
+      redirect('/login')
     }
   }
 }

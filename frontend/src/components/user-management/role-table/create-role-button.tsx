@@ -7,14 +7,15 @@ import { CreateRoleModal } from "./create-role-modal";
 
 interface CreateRoleModalProps {
   token: string;
+  companyId: string
 }
 
-export const CreateRoleButton = ({ token }: CreateRoleModalProps) => {
+export const CreateRoleButton = ({ token, companyId }: CreateRoleModalProps) => {
   const [modal, setModal] = useState(false);
 
   return (
     <>
-      {modal && <CreateRoleModal token={token} onClose={() => setModal(false)} />}
+      {modal && <CreateRoleModal token={token} companyId={companyId} onClose={() => setModal(false)} />}
       <Button
         label="Create Role"
         variant="dark"

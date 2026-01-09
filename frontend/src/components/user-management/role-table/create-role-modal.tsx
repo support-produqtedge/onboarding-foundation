@@ -1,3 +1,4 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import InputGroup from "@/components/ui/InputGroup";
 import { InfoModal } from "@/components/ui/modal"
 import { TextAreaGroup } from "@/components/ui/text-area";
@@ -54,10 +55,20 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
   const [role, setRole] = useState<{name: string, description: string}>({
     name: "",
     description: '',
-  })
+  });
+  const [userMgtPermissions, setUserMgtPermissions] = useState<{view: boolean; write: boolean; status: boolean}>({
+    view: false,
+    write: false,
+    status: false
+  });
+  const [roleMgtPermissions, setRoleMgtPermissions] = useState<{view: boolean; write: boolean; status: boolean}>({
+    view: false,
+    write: false,
+    status: false
+  });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
-  const [roleCred, setRoleCred] = useState<{name: string, companyId: string, description: string}>({
+  const [roleCred, setRoleCred] = useState<{name: string, companyId: string, description: string;}>({
     name: role.name || '',
     description: role.description || '',
     companyId,
@@ -69,6 +80,7 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
 
   useEffect(() => {
     let ignore = false;
+    console.log(companyId);
     if (edit) {
       async function fetchRole() {
         const response = await fetch(`/api/admin/superadmin/roles/${id}`, {
@@ -101,10 +113,18 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
   }
 
   const onSubmit = () => {
+    const roleCredentials = {
+      name: roleCred.name,
+      description: roleCred.description,
+      companyId,
+      userMgt: userMgtPermissions,
+      roleMgt: roleMgtPermissions
+    }
+
     setIsLoading(true);
 
     if (!edit) {
-      addRole(token, roleCred).then(res => {
+      addRole(token, roleCredentials).then(res => {
         if ("error" in res) {
           console.log(res.error);
           setIsLoading(false);
@@ -161,6 +181,67 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
           handleChange={handleInputChange}
           defaultValue={edit ? role.description : roleCred.description}
         />
+        <div className="py-3">
+          <h1 className="font-semibold">Permissions</h1>
+          <div className="px-5">
+            <div className="py-3 border-b border-slate-300">
+              <div>
+                <div className="pb-2">User Management</div>
+                <div className="flex flex-wrap gap-4">
+                  <Checkbox label="View only" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setUserMgtPermissions({...userMgtPermissions, view: true})
+                    } else {
+                      setUserMgtPermissions({...userMgtPermissions, view: false })
+                    }
+                  }}/>
+                  <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setUserMgtPermissions({...userMgtPermissions, write: true})
+                    } else {
+                      setUserMgtPermissions({...userMgtPermissions, write: false })
+                    }
+                  }}/>
+                  <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setUserMgtPermissions({...userMgtPermissions, status: true})
+                    } else {
+                      setUserMgtPermissions({...userMgtPermissions, status: false })
+                    }
+                  }} />
+                </div>
+              </div>
+            </div>
+            <div className="py-3 border-b border-slate-300">
+              <div>
+                <div className="pb-2">Role Management</div>
+                <div className="flex flex-wrap gap-4">
+                  <Checkbox label="View only" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setRoleMgtPermissions({...roleMgtPermissions, view: true})
+                    } else {
+                      setRoleMgtPermissions({...roleMgtPermissions, view: false })
+                    }
+                  }} />
+                  <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setRoleMgtPermissions({...roleMgtPermissions, write: true})
+                    } else {
+                      setRoleMgtPermissions({...roleMgtPermissions, write: false })
+                    }
+                  }}/>
+                  <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
+                    if (e.target.checked) {
+                      setRoleMgtPermissions({...roleMgtPermissions, status: true})
+                    } else {
+                      setRoleMgtPermissions({...roleMgtPermissions, status: false })
+                    }
+                  }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </InfoModal>
   )

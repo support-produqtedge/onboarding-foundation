@@ -8,6 +8,10 @@ interface UserResponse {
     name: string;
     description: string;
   },
+  permissions: {
+    user_management: {view: boolean, write: boolean, statusChange: boolean};
+    role_management: {view: boolean, write: boolean, statusChange: boolean}
+  },
   company: {
     id: string;
     company_name: string;

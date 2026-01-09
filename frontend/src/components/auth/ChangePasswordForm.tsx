@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import InputGroup from "../ui/InputGroup";
 import toast from "../ui/toast";
 import { redirect } from "next/navigation";
+import { deleteSession } from "@/lib/session";
 
 
 interface ChangePasswordProps {
@@ -10,6 +11,7 @@ interface ChangePasswordProps {
 }
 
 const changePassword = async (id: string, password: string) => {
+  await deleteSession();
   const response = await fetch(`/api/auth/change-password/${id}`, {
     method: "POST",
     headers: {
@@ -83,7 +85,7 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
               name="password"
               className="mb-5 [&_input]:py-[15px]"
               placeholder="Enter email"
-              type="text"
+              type="password"
               handleChange={handlePasswordChange}
 
               />

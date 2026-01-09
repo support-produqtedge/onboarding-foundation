@@ -1,6 +1,6 @@
 import { sign, verify, JwtPayload } from "jsonwebtoken";
 import { SECRET_KEY } from "../config";
-import { AuditLogs, Company, Role, User, VerifyEmail } from "../db";
+import { AuditLogs, Company, Role, RoleMgtPermission, UserMgtPermission, User, VerifyEmail } from "../db";
 import { compare, hash } from "bcrypt";
 import crypto from 'crypto';
 import AuditLogsService from "./auditLogs.services";
@@ -11,6 +11,8 @@ class AuthService {
   private readonly company = Company;
   private readonly registerToken = VerifyEmail;
   private readonly auditLogsService = new AuditLogsService();
+  private readonly UserMgtPermission = UserMgtPermission;
+  private readonly RoleMgtPermission = RoleMgtPermission;
 
   private async CompanyOwnerCreationKey(id: string, email: string) {
     const dataStoreInToken: { id: string, sub: string } = {
@@ -48,8 +50,23 @@ class AuthService {
         role_id: role.id,
         password_digest: hashPassword
       });
+      await this.UserMgtPermission.create({
+        role_id: role.id,
+        view: true,
+        write: true,
+        statusChange: true
+      });
+
+      await this.RoleMgtPermission.create({
+        role_id: role.id,
+        view: true,
+        write: true,
+        statusChange: true
+      })
 
       if (!user) throw new Error("Something went wrong");
+
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Company Owner", "User is registered");
 
       return JSON.stringify({ user: user.id, role: role.id });
     } catch (error) {
@@ -120,7 +137,7 @@ class AuthService {
       const isValidPassword = await compare(password, user.password_digest);
       if (!isValidPassword) throw new Error("Invalid Credentials");
       const tokenData = await this.userLoginToken(user.id, user.companyId);
-      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Login", "User Logged In")
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Login", "User Logged In");
       return tokenData;
     } catch (error) {
       if (error instanceof Error) {
