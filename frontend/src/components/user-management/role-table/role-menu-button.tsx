@@ -10,9 +10,15 @@ interface RoleMenuButtonProps {
   id: string;
   token: string;
   companyId: string;
+  userPermission?: {
+  permissions: {
+    user_management: {view: boolean, write: boolean, statusChange: boolean},
+    role_management: {view: boolean, write: boolean, statusChange: boolean},
+  }
+}
 }
 
-export const RoleMenuButton = ({ id, token, companyId }: RoleMenuButtonProps) => {
+export const RoleMenuButton = ({ id, token, companyId, userPermission }: RoleMenuButtonProps) => {
   const [viewRoleModal, setViewRoleModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
   return (
@@ -31,7 +37,7 @@ export const RoleMenuButton = ({ id, token, companyId }: RoleMenuButtonProps) =>
         </MenuButton>
       }>
         <MenuItem className="bg-white hover:bg-slate-300 hover:cursor-pointer" onClick={() => setViewRoleModal(true)}>View</MenuItem>
-        <MenuItem className="bg-white hover:bg-slate-300 hover:cursor-pointer" onClick={() => setEditRoleModal(true)}>Edit</MenuItem>
+        {userPermission?.permissions.role_management.write && (<MenuItem className="bg-white hover:bg-slate-300 hover:cursor-pointer" onClick={() => setEditRoleModal(true)}>Edit</MenuItem>)}
       </Menu>
     </>
   )

@@ -8,8 +8,9 @@ class RoleController {
 
   public createRole = async (expressRequest: Request, res: Response, next: NextFunction) => {
     const req = expressRequest as CustomRequest;
+
     try {
-      const role = await this.roleService.createRole(req.body.name, String(req.auth.companyId), req.body.description);
+      const role = await this.roleService.createRole(req.body.name, String(req.auth.companyId), req.body.userMgt, req.body.roleMgt, req.body.description);
       res.status(201).json(role);
     } catch (error) {
       if (error instanceof Error) {

@@ -8,6 +8,8 @@ import CompanySchema from "./models/company.model";
 import UserSchema from "./models/user.model";
 import VerifyEmailSchema from "./models/verifyEmail.model";
 import AuditLogsSchema from "./models/auditLogs.model";
+import UserMgtPermissionSchema from "./models/user_management_resource.model";
+import RoleMgtPermissionSchema from "./models/role_management_resource.model";
 
 export const sequelize = new Sequelize(`mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
 export const SuperAdmin = SuperAdminSchema(sequelize);
@@ -17,6 +19,8 @@ export const Role = RoleSchema(sequelize);
 export const Company = CompanySchema(sequelize);
 export const User = UserSchema(sequelize);
 export const AuditLogs = AuditLogsSchema(sequelize);
+export const UserMgtPermission = UserMgtPermissionSchema(sequelize);
+export const RoleMgtPermission = RoleMgtPermissionSchema(sequelize);
 
 const checkConnection = async () => {
   try {

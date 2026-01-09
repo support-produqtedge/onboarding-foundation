@@ -32,6 +32,7 @@ export function ChevronRight(props: PropsType) {
   );
 }
 
+
 export function HomeIcon(props: PropsType) {
   return (
     <svg

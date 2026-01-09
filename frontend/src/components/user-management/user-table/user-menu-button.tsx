@@ -12,9 +12,15 @@ interface RoleMenuButtonProps {
   token: string;
   companyId: string;
   status: string;
+  userPermission?: {
+  permissions: {
+    user_management: {view: boolean, write: boolean, statusChange: boolean},
+    role_management: {view: boolean, write: boolean, statusChange: boolean},
+  }
+}
 }
 
-export const UserMenuButton = ({ id, token, companyId, status }: RoleMenuButtonProps) => {
+export const UserMenuButton = ({ id, token, companyId, status, userPermission }: RoleMenuButtonProps) => {
   const [viewUserModal, setViewUserModal] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
@@ -38,12 +44,18 @@ export const UserMenuButton = ({ id, token, companyId, status }: RoleMenuButtonP
         <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
           setViewUserModal(true);
         }}>View</MenuItem>
-        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
-           setEditRoleModal(true);
-         }}>Edit</MenuItem>
-        <MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
-          setStatusModal(true);
-        }}>{status ? 'Deactivate' : 'Activate'}</MenuItem>
+        {
+            userPermission?.permissions.user_management.write && (<MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+              setEditRoleModal(true);
+            }}>Edit</MenuItem>)
+
+        }
+         {
+           userPermission?.permissions.user_management.statusChange && (<MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+             setStatusModal(true);
+           }}>{status ? 'Deactivate' : 'Activate'}</MenuItem>)
+
+         }
       </Menu>
     </>
   )

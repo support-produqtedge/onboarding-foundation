@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
-import { getInvoiceTableData } from "./data";
 import { CreateRoleButton } from "./create-role-button";
 import { RoleMenuButton } from "./role-menu-button";
 
@@ -23,10 +22,15 @@ interface RoleTableProps {
 }[];
 token: string;
 companyId: string;
+userPermission: {
+  permissions: {
+    user_management: {view: boolean, write: boolean, statusChange: boolean},
+    role_management: {view: boolean, write: boolean, statusChange: boolean},
+  }
+}
 }
 
-export async function RoleTable({ roles, token, companyId }: RoleTableProps) {
-  const data = await getInvoiceTableData();
+export async function RoleTable({ roles, token, companyId, userPermission }: RoleTableProps) {
 
   return (
     <>
@@ -35,7 +39,9 @@ export async function RoleTable({ roles, token, companyId }: RoleTableProps) {
           <div>
             <input placeholder="Search" className="border"/>
           </div>
-          <CreateRoleButton token={token} />
+          {
+            userPermission.permissions.role_management.write && (<CreateRoleButton token={token} companyId={companyId} />)
+          }
         </div>
         <Table>
           <TableHeader>
@@ -67,7 +73,7 @@ export async function RoleTable({ roles, token, companyId }: RoleTableProps) {
                     </p>
                   </TableCell>
                   <TableCell className="xl:pr-7.5">
-                    <RoleMenuButton companyId={companyId} id={item.id} token={token} />
+                    <RoleMenuButton companyId={companyId} id={item.id} token={token} userPermission={userPermission} />
                 </TableCell>
                 </TableRow>
               ))

@@ -1,15 +1,15 @@
 import { sign, verify, JwtPayload } from "jsonwebtoken";
-import { Company, Role, User, VerifyEmail } from "../db";
+import { Company, Role, RoleMgtPermission, User, UserMgtPermission, VerifyEmail } from "../db";
 import crypto from "crypto";
 import { hash } from "bcrypt";
-import AuditLogsService from "./auditLogs.services";
 
 class UserService {
   private readonly User = User;
   private readonly Role = Role;
   private readonly company = Company;
   private readonly registerToken = VerifyEmail;
-  private readonly auditLogsService = new AuditLogsService();
+  private readonly UserMgtPermission = UserMgtPermission;
+  private readonly RoleMgtPermission = RoleMgtPermission;
 
   private async UserCreationKey(id: string, email: string) {
     const dataStoreInToken: {id: string, sub: string} = {
@@ -126,7 +126,9 @@ class UserService {
           "id",
           "company_name",
         ]
-      })
+      });
+      const userMgtPermissions = await this.UserMgtPermission.findOne({ where: {role_id: role.id}});
+      const roleMgtPermissions = await this.RoleMgtPermission.findOne({ where: {role_id: role.id}});
       if (!user) throw new Error("User not found");
       return {
         id: user.id,
@@ -135,6 +137,10 @@ class UserService {
         email: user.email,
         phone: user.phone,
         role: role,
+        permissions: {
+          user_management: userMgtPermissions,
+          role_management: roleMgtPermissions
+        },
         company: company || {},
         isEmailVerified: user.isEmailVerified,
         status: user.verification_status,

@@ -30,22 +30,15 @@ interface UserTableProps {
 }[];
 token: string;
 companyId: string;
+userPermission: {
+  permissions: {
+    user_management: {view: boolean, write: boolean, statusChange: boolean},
+    role_management: {view: boolean, write: boolean, statusChange: boolean},
+  }
+}
 }
 
-const getRole = async (token: string, roleId: string) => {
-  const response = await fetch(`/api/admin/superadmin/roles/${roleId}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  return await response.json()
-}
-
-export async function UserTable({ users, token, companyId }: UserTableProps) {
+export async function UserTable({ users, token, companyId, userPermission }: UserTableProps) {
 
   return (
     <>
@@ -54,7 +47,9 @@ export async function UserTable({ users, token, companyId }: UserTableProps) {
           <div>
             <input placeholder="Search" className="border"/>
           </div>
-          <CreateUserButton token={token} companyId={companyId} />
+          {
+            userPermission.permissions.user_management.write && (<CreateUserButton token={token} companyId={companyId} />)
+          }
         </div>
         <Table>
           <TableHeader>

@@ -1,9 +1,13 @@
-import { Company, Role } from "../db";
+import { Company, Role, RoleMgtPermission, UserMgtPermission } from "../db";
+import AuditLogsService from "./auditLogs.services";
 
 class RoleService {
   private readonly Role = Role;
+  private readonly UserMgtPermission = UserMgtPermission;
+  private readonly RoleMgtPermission = RoleMgtPermission;
+  private readonly auditLogsService = new AuditLogsService();
 
-  public async createRole(name: string, companyId: string, description?: string,) {
+  public async createRole(name: string, companyId: string, userMgt: {view: boolean, write: boolean, status: boolean}, roleMgt: {view: boolean, write: boolean, status: boolean}, description?: string) {
     try {
       const role = await this.Role.create({
         name, description, company_id: companyId
@@ -13,6 +17,21 @@ class RoleService {
         throw new Error("Something went wrong")
       }
 
+      await this.UserMgtPermission.create({
+        role_id: role.id,
+        view: userMgt.view,
+        write: userMgt.write,
+        statusChange: userMgt.status
+      });
+
+      await this.RoleMgtPermission.create({
+        role_id: role.id,
+        view: roleMgt.view,
+        write: roleMgt.write,
+        statusChange: roleMgt.status
+      })
+
+      await this.auditLogsService.createLog("", "Role Creation", "New role created");
       return role;
 
     } catch (error) {
