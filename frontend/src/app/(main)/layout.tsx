@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
 }
 
 const MainLayout: FC<DashboardLayoutProps> = async ({ children }) => {
-  const { token, role, id} = await verifySession();
+  const { token, role, id, companyId} = await verifySession();
 
   let userLoggedin = role === "superAdmin" ? await getAdmin(String(token)) : await getSignedUser(String(token), String(id));
 
@@ -20,11 +20,15 @@ const MainLayout: FC<DashboardLayoutProps> = async ({ children }) => {
     redirect("/login");
   }
 
+  if (role === "user" && !companyId) {
+    redirect("/home");
+  }
+
   return (
     <Providers>
       <NextTopLoader color="#F68E1E" showSpinner={false} />
       <div className="flex min-h-screen">
-        <Sidebar name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} email={userLoggedin.email} role={role} company={String(userLoggedin.company?.company_name || "Admin")} />
+        <Sidebar name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} email={userLoggedin.email} role={role} company={String(userLoggedin.company?.company_name || "")} />
 
         <div className="w-full bg-gray-2">
           <Header name={`${userLoggedin.firstName} ${userLoggedin.lastName}`} />

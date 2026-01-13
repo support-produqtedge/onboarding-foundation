@@ -11,7 +11,6 @@ class AuthController {
   private readonly superAdminservice = new SuperAdminService();
   private readonly authService = new AuthService();
   private readonly userService = new UserService();
-  private readonly auditlogService = new AuditLogsService();
 
   public registerCompanyOwner = async (req: Request, res: Response, next: NextFunction) => {
     const { firstName, lastName, email, phone, password } = req.body;
@@ -70,6 +69,21 @@ class AuthController {
     } catch (error) {
       if (error instanceof Error) {
         next(createHttpError(401, error))
+      }
+      next(createHttpError(401));
+    }
+  }
+
+  public registerSingleUser = async (req: Request, res: Response, next: NextFunction) => {
+    const {firstName, lastName, email, phone, nin, password} = req.body;
+    try {
+      const userCreationKey = await this.authService.createSingleUser(firstName, lastName, email, phone, password, nin);
+      if (!userCreationKey) throw new Error("Something went wrong");
+
+      res.status(201).json(userCreationKey);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(401, error));
       }
       next(createHttpError(401));
     }

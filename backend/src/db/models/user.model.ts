@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Sequelize, STRING } from "sequelize";
 import bcrypt from "bcrypt";
 import { IUser } from "../interfaces/user.interface";
 
@@ -39,6 +39,10 @@ const UserSchema = (sequelize: Sequelize) => {
       },
       companyId: {
         type: DataTypes.UUID,
+        allowNull: true
+      },
+      nin: {
+        type: DataTypes.STRING,
         allowNull: true
       },
       role_id: {

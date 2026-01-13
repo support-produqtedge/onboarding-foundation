@@ -31,6 +31,19 @@ class KYCController {
       next(createHttpError(404));
     }
   }
+
+  public verifyNin = async (req: Request, res: Response, next: NextFunction) => {
+    const {nin} = req.body;
+    try {
+      const userNin = await this.monoServices.verifyNin(nin);
+      res.status(200).json(userNin);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(404, error))
+      }
+      next(createHttpError(404));
+    }
+  }
 }
 
 export default KYCController;

@@ -21,6 +21,7 @@ const authCtrl = new AuthController();
 router.post("/admin/auth/login", authCtrl.loginSuperAdmin);
 router.post("/auth/login", emailVerified, authCtrl.loginUser);
 router.post("/auth/register", authCtrl.registerCompanyOwner);
+router.post("/auth/register-user", authCtrl.registerSingleUser);
 router.post("/auth/register-company", validateKyc, authCtrl.registerCompany);
 router.post("/auth/reset-password", authCtrl.resetPassword);
 
@@ -52,6 +53,7 @@ router.get("/admin/superadmin/company/:id", requireSignin, companyCtrl.getCompan
 const kycCtrl = new KYCController();
 router.post("/verify-tin", kycCtrl.verifyTIN);
 router.post("/verify-cac", kycCtrl.verifyCac);
+router.post("/verify-nin", kycCtrl.verifyNin);
 
 const auditLogsCtrl = new AuditLogsController();
 router.get("/logs", requireSignin, auditLogsCtrl.getLogs)

@@ -17,7 +17,7 @@ class AuthService {
   private async CompanyOwnerCreationKey(id: string, email: string) {
     const dataStoreInToken: { id: string, sub: string } = {
       id,
-      sub: "Onboarding company-creation"
+      sub: "Onboarding user/company-creation"
     };
 
     let current_date = (new Date()).valueOf().toString();
@@ -98,6 +98,39 @@ class AuthService {
     }
   }
 
+  public async createSingleUser(firstName: string, lastName: string, email: string, phone: string, password: string, nin: string) {
+    try {
+      const hashPassword = await hash(password, 10);
+      const role = await this.role.create({
+        name: "single sign-up",
+        description: "single person sign-up"
+      })
+      const user = await this.user.create({
+        firstName,
+        lastName,
+        email,
+        phone,
+        role_id: role.id,
+        password_digest: hashPassword,
+        nin,
+      });
+
+      const registerKey = await this.CompanyOwnerCreationKey(user.id, user.email);
+
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Single User Sign-up", "User registers");
+      return {
+        email: user.email,
+        registerKey
+      };
+
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
   public async createCompany(userId: string, roleId: string, name: string, cac: string, tin: string, document?: string) {
     try {
       const user = await this.user.findByPk(userId);
@@ -138,7 +171,7 @@ class AuthService {
 
 
   private userLoginToken(userId: string, companyId: string) {
-    const dataStoredInToken: { id: string; companyId: string, role: string, sub: string } = {
+    const dataStoredInToken: { id: string; companyId?: string, role: string, sub: string } = {
       id: userId,
       companyId,
       role: "user",
