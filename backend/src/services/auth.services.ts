@@ -35,6 +35,27 @@ class AuthService {
     return key;
   }
 
+  private async ResetUserPasswordToken(id: string, email: string) {
+    const dataStoreInToken: { id: string, sub: string } = {
+      id,
+      sub: "Onboarding reset-password"
+    };
+
+    let current_date = (new Date()).valueOf().toString();
+    let random = Math.random().toString();
+    const key = await crypto.createHash('sha1').update(current_date + random).digest('hex');
+    const expiresIn = 60 * 60 * 60;
+    const token = sign(dataStoreInToken, key, { expiresIn });
+
+    await this.registerToken.create({
+      key,
+      email: email,
+      registerToken: token
+    });
+
+    return key;
+  }
+
   public async registerCompanyOwner(firstName: string, lastName: string, email: string, phone: string, password: string) {
     try {
       const hashPassword = await hash(password, 10);
@@ -166,6 +187,33 @@ class AuthService {
       await this.registerToken.destroy({ where: { key } });
       await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Email Verification", "User email verified");
       return user;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
+  public async resetPassword(email: string) {
+    try {
+      const user = await this.user.findOne({where: {email}});
+      if (!user) throw new Error("User not found");
+
+      const updatedUser = await user.update({
+        password_digest: "",
+      });
+      const passwordResetKey = await this.ResetUserPasswordToken(user.id, user.email);
+
+      await this.auditLogsService.createLog(`${user.firstName} ${user.lastName}`, "Password Reset", "User reset password");
+
+      return {
+        id: updatedUser.id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+        passwordResetKey
+      };
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

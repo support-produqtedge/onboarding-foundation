@@ -24,7 +24,7 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
 
   return (
     <div className="w-[80%]">
-      <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
+      <div className="flex flex-col flex-1 w-full max-w-md">
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-2xl">
@@ -62,10 +62,15 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
                 handleChange={handleInputChange}
               />
             </div>
+            <div className="flex justify-end font-semibold cursor-pointer">
+              <Link href="/forgot-password">
+                Forgot Password
+              </Link>
+            </div>
             {state && <p className="text-red-600 text-sm text-center -mt-2">Invalid Login Credentials</p>}
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
+              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-3.75 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
               disabled={isPending}
             >
               <span className="inline-block pr-2">

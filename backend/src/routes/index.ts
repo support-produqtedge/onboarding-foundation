@@ -22,6 +22,7 @@ router.post("/admin/auth/login", authCtrl.loginSuperAdmin);
 router.post("/auth/login", emailVerified, authCtrl.loginUser);
 router.post("/auth/register", authCtrl.registerCompanyOwner);
 router.post("/auth/register-company", validateKyc, authCtrl.registerCompany);
+router.post("/auth/reset-password", authCtrl.resetPassword);
 
 const superAdminCtrl = new SuperAdminController();
 router.get("/admin/superadmin", requireSignin, superAdminCtrl.getSuperAdmin);

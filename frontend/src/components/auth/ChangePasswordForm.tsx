@@ -50,13 +50,15 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
           title: "Change Password",
           message: "Something went wrong",
           type: "error"
-        })
+        });
+        setIsLoading(false)
       } else {
         toast({
           title: "Change Password",
           message: "Password Changed Successfully",
           type: "success"
         });
+        setIsLoading(false);
         redirect('/');
       }
     })
@@ -69,10 +71,10 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-2xl">
-              Set Password
+              Reset Password
             </h1>
             <p className="text-sm text-gray-500">
-              Set New Password
+              Reset New Password
             </p>
           </div>
         </div>
@@ -83,7 +85,7 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
               <InputGroup
               label="Password"
               name="password"
-              className="mb-5 [&_input]:py-[15px]"
+              className="mb-5 [&_input]:py-3.75"
               placeholder="Enter email"
               type="password"
               handleChange={handlePasswordChange}
@@ -92,22 +94,23 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
               <InputGroup
                 label="Confirm Password"
                 name="confirmPassword"
-                className="mb-5 [&_input]:py-[15px]"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Enter Password"
                 type="password"
                 handleChange={handlePasswordChange}
               />
             </div>
             <button
-              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
+              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-3.75 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
               onClick={(e) => {
                 e.preventDefault();
                 submitChangePassword();
               }}
             >
-              <span className="inline-block pr-2">
-                Submit
-              </span>
+              <span className="inline-block pr-2">Submit</span>
+              {isLoading && (
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent dark:border-primary dark:border-t-transparent" />
+              )}
             </button>
           </div>
       </div>

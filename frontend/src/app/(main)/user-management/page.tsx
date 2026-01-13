@@ -5,8 +5,8 @@ import { getRoles, getRolesByCompany, getUser, getUserByCompany } from "./servic
 import { getSignedUser } from "../services";
 
 const UserManagementPage = async () => {
-  const {token, companyId, id} = await verifySession();
-  const users = await getUserByCompany(token!);
+  const {token, companyId, id, role} = await verifySession();
+  const users = role === "superAdmin" ? [] : await getUserByCompany(token!);
   const roles = await getRolesByCompany(token!, String(companyId));
   const noOfRoles = roles.length;
   const noOfUsers = users.length;

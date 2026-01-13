@@ -27,7 +27,6 @@ export async function CompanyTable({companies}: CompanyTableProps) {
             <TableHeader>
               <TableRow className="border-none bg-[#F7F9FC] [&>th]:py-4 [&>th]:text-base [&>th]:text-dark ">
                 <TableHead>Company</TableHead>
-                <TableHead>Owner</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -41,9 +40,6 @@ export async function CompanyTable({companies}: CompanyTableProps) {
                           {company.company_name}
                         </Link>
                       </h5>
-                    </TableCell>
-                    <TableCell>
-                      <p className="text-dark">{`${company.company_owner.firstName} ${company.company_owner.lastName}`}</p>
                     </TableCell>
                   </TableRow>
                 ))

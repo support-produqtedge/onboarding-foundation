@@ -63,7 +63,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
           value={props.value}
           defaultValue={props.defaultValue}
           className={cn(
-            "w-full rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary disabled:cursor-default disabled:bg-gray-2 data-[active=true]:border-primary pl-7",
+            "w-full rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition focus:border-primary disabled:cursor-default disabled:bg-gray-2 data-[active=true]:border-primary pl-4",
           )}
           required={required}
           disabled={disabled}

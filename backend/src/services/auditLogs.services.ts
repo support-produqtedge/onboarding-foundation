@@ -22,7 +22,9 @@ class AuditLogsService {
 
   public async getLogs() {
     try {
-      const logs = await this.AuditLogs.findAll();
+      const logs = await this.AuditLogs.findAll({
+        order: [['createdAt', 'DESC']]
+      });
 
       return logs;
     } catch (error) {

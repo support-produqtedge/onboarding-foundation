@@ -48,7 +48,7 @@ export async function UserTable({ users, token, companyId, userPermission }: Use
             <input placeholder="Search" className="border"/>
           </div>
           {
-            userPermission.permissions.user_management.write && (<CreateUserButton token={token} companyId={companyId} />)
+            userPermission.permissions?.user_management.write && (<CreateUserButton token={token} companyId={companyId} />)
           }
         </div>
         <Table>
@@ -108,7 +108,7 @@ export async function UserTable({ users, token, companyId, userPermission }: Use
 
 
                 <TableCell className="xl:pr-7.5">
-                  <UserMenuButton token={token} id={item.id} companyId={companyId} status={item.status} />
+                  <UserMenuButton token={token} id={item.id} companyId={companyId} status={item.status} userPermission={userPermission}/>
                 </TableCell>
               </TableRow>
             ))}
