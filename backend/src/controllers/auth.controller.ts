@@ -129,6 +129,47 @@ class AuthController {
       next(createHttpError(403));
     }
   }
+
+  public resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    try {
+      const user = await this.authService.resetPassword(email);
+
+      MailService({
+        subject: "Password Reset",
+        email: email,
+        html: `
+                <html>
+
+                  <body>
+                      <table>
+                          <tr>
+                              <td style="padding-bottom: 2.5em; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">
+                                      <div style="padding-bottom: 10px">Dear ${user.firstName} ${user.lastName},</div>
+                                      <div style="padding-bottom: 10px">A password reset request has been made on your account</div>
+                                      <div style="padding-bottom: 20px">Please clickthe link below to reset your password.</div>
+                                      <div style="text-align: center; font-weight: 600;">
+                                          <a href="${ONBOARDING_FOUNDATION_URL}/change-password/${user.id}?key=${user.passwordResetKey}">Link</a>
+                                      </div>
+                                      <div style="padding-top: 20px;">If you do not recognise this request, kindly ignore this message</div>
+                                      <div style="padding-top: 10px; font-size: 13px;">Produqtedge Team</div>
+                              </td>
+                            </tr><!-- end: tr -->
+                      </table>
+                  </body>
+              </html>
+              `
+      });
+
+      res.status(200).json(user);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(403, error));
+      }
+      next(createHttpError(403));
+    }
+  }
 }
 
 export default AuthController;

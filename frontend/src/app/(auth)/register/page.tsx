@@ -6,14 +6,14 @@ const RegisterPage = () => {
   return (
     <div className="relative p-6 z-1">
       <div className="relative flex lg:flex-row w-full h-screen justify-center flex-col">
-        <div className="flex flex-col items-center justify-center flex-1 lg:w-1/2 w-full">
-          <div className="pb-5">
+        <div className="lg:w-1/2 w-full">
+          <div className="pb-5 w-[173.15px]">
             <Image
               src={"/logo.png"}
               alt="produqtedge logo"
               height={28.6}
               width={173.15}
-              className="w-auto h-auto"
+              className="w-full h-full"
             />
           </div>
           <RegisterForm />

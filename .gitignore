@@ -24,6 +24,7 @@ backend/uploads/
 
 # Log files
 *.log
+logs/
 server.log
 backend/server.log
 

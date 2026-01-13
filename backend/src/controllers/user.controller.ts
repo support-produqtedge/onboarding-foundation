@@ -20,22 +20,6 @@ class UserController {
         String(req.auth.companyId)
       );
 
-      /* MailService({
-        subject: "Welcome to Produqtedge",
-        email: req.body.email,
-        html: `
-          <html>
-            <body>
-              <div>Dear ${req.body.firstName} ${req.body.lastName}</div>
-              <div>You have been invited to join your teammates on Produqtedge</div>
-              <div>Please click the link below to activate your account</div>
-              <a>${ONBOARDING_FOUNDATION_URL}/change-password/${userKey.userId}?key=${userKey.key}</a>
-              <div>If you do not recognise this admin, kindly ignore this message</div>
-              <div>Produqtedge Team</div>
-            </body>
-          </html>
-        `
-      }); */
       MailService({
         subject: "Welcome to Produqtedge",
         email: req.body.email,

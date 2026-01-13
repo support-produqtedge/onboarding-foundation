@@ -7,7 +7,7 @@ import { logger } from "../utils/logger";
 const MailService = async(options: MailOptionsInterface) => {
   const msg = {
     to: options.email,
-    from: "kenechi@produqtedge.com",
+    from: "subscriptions@produqtedge.com",
     subject: options.subject,
     html: options.html,
   }

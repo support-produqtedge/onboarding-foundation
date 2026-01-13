@@ -4,7 +4,6 @@ import { cn } from "@/lib/utilities";
 import InputGroup from './ui/InputGroup';
 import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { loginAdmin } from "@/action";
-import { boolean } from "zod";
 
 type AdminAuthFormProps = React.HTMLAttributes<HTMLDivElement>
 
@@ -65,7 +64,7 @@ export function AdminAuthForm({ className, ...props }: AdminAuthFormProps) {
             {error && <p className="text-red-600 text-sm text-center -mt-2">{error}</p>}
             <button
               type="submit"
-              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
+              className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-3.75 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
               disabled={isPending}
             >
               <span className="inline-block pr-2">
