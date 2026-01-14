@@ -5,6 +5,9 @@ import { TextAreaGroup } from "@/components/ui/text-area";
 import toast from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { useState, ChangeEvent, useEffect } from 'react';
+import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
+import { ChevronDown } from "@/components/icons";
+import { cn } from "@/lib/utilities";
 
 interface CreateRoleProps {
   onClose: () => void;
@@ -14,7 +17,7 @@ interface CreateRoleProps {
   companyId: string;
 }
 
-const addRole = async(token: string, request: {name: string, companyId: string; description: string}) => {
+const addRole = async (token: string, request: { name: string, companyId: string; description: string }) => {
   try {
     const response = await fetch("/api/admin/superadmin/roles", {
       method: "POST",
@@ -32,7 +35,7 @@ const addRole = async(token: string, request: {name: string, companyId: string; 
   }
 }
 
-const editRole = async(token: string, id: string, request: {name: string, companyId: string, description: string}) => {
+const editRole = async (token: string, id: string, request: { name: string, companyId: string, description: string }) => {
   try {
     const response = await fetch(`/api/admin/superadmin/roles/${id}`, {
       method: "PUT",
@@ -50,25 +53,42 @@ const editRole = async(token: string, id: string, request: {name: string, compan
   }
 }
 
+const AccordionItem = ({ header, ...rest }: { header: React.ReactNode; [key: string]: any }) => (
+  <Item
+    {...rest}
+    header={
+      <>
+        {header}
+        <ChevronDown className="ml-auto" />
+      </>
+    }
+
+    buttonProps={{
+      className: ({isEnter}) =>
+        cn("cursor-pointer flex item-center w-full m-0 p-4 text-sm text-left bg-transparent border-0", isEnter && "bg-[#e7e7e7]")
+    }}
+  />
+);
+
 export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateRoleProps) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [role, setRole] = useState<{name: string, description: string}>({
+  const [role, setRole] = useState<{ name: string, description: string }>({
     name: "",
     description: '',
   });
-  const [userMgtPermissions, setUserMgtPermissions] = useState<{view: boolean; write: boolean; status: boolean}>({
+  const [userMgtPermissions, setUserMgtPermissions] = useState<{ view: boolean; write: boolean; status: boolean }>({
     view: false,
     write: false,
     status: false
   });
-  const [roleMgtPermissions, setRoleMgtPermissions] = useState<{view: boolean; write: boolean; status: boolean}>({
+  const [roleMgtPermissions, setRoleMgtPermissions] = useState<{ view: boolean; write: boolean; status: boolean }>({
     view: false,
     write: false,
     status: false
   });
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
-  const [roleCred, setRoleCred] = useState<{name: string, companyId: string, description: string;}>({
+  const [roleCred, setRoleCred] = useState<{ name: string, companyId: string, description: string; }>({
     name: role.name || '',
     description: role.description || '',
     companyId,
@@ -186,58 +206,64 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
           <div className="px-5">
             <div className="py-3 border-b border-slate-300">
               <div>
-                <div className="pb-2">User Management</div>
-                <div className="flex flex-wrap gap-4">
-                  <Checkbox label="View only" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setUserMgtPermissions({...userMgtPermissions, view: true})
-                    } else {
-                      setUserMgtPermissions({...userMgtPermissions, view: false })
-                    }
-                  }}/>
-                  <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setUserMgtPermissions({...userMgtPermissions, write: true})
-                    } else {
-                      setUserMgtPermissions({...userMgtPermissions, write: false })
-                    }
-                  }}/>
-                  <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setUserMgtPermissions({...userMgtPermissions, status: true})
-                    } else {
-                      setUserMgtPermissions({...userMgtPermissions, status: false })
-                    }
-                  }} />
-                </div>
+                <Accordion>
+                  <AccordionItem header="User Management">
+                    <div className="flex flex-wrap gap-4 mt-5">
+                      <Checkbox label="View only" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setUserMgtPermissions({ ...userMgtPermissions, view: true })
+                        } else {
+                          setUserMgtPermissions({ ...userMgtPermissions, view: false })
+                        }
+                      }} />
+                      <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setUserMgtPermissions({ ...userMgtPermissions, write: true })
+                        } else {
+                          setUserMgtPermissions({ ...userMgtPermissions, write: false })
+                        }
+                      }} />
+                      <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setUserMgtPermissions({ ...userMgtPermissions, status: true })
+                        } else {
+                          setUserMgtPermissions({ ...userMgtPermissions, status: false })
+                        }
+                      }} />
+                    </div>
+                  </AccordionItem>
+                </Accordion>
               </div>
             </div>
             <div className="py-3 border-b border-slate-300">
               <div>
-                <div className="pb-2">Role Management</div>
-                <div className="flex flex-wrap gap-4">
-                  <Checkbox label="View only" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setRoleMgtPermissions({...roleMgtPermissions, view: true})
-                    } else {
-                      setRoleMgtPermissions({...roleMgtPermissions, view: false })
-                    }
-                  }} />
-                  <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setRoleMgtPermissions({...roleMgtPermissions, write: true})
-                    } else {
-                      setRoleMgtPermissions({...roleMgtPermissions, write: false })
-                    }
-                  }}/>
-                  <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
-                    if (e.target.checked) {
-                      setRoleMgtPermissions({...roleMgtPermissions, status: true})
-                    } else {
-                      setRoleMgtPermissions({...roleMgtPermissions, status: false })
-                    }
-                  }} />
-                </div>
+                <Accordion>
+                  <AccordionItem header="Role Management">
+                    <div className="flex flex-wrap gap-4 mt-5">
+                      <Checkbox label="View only" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, view: true })
+                        } else {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, view: false })
+                        }
+                      }} />
+                      <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, write: true })
+                        } else {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, write: false })
+                        }
+                      }} />
+                      <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
+                        if (e.target.checked) {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, status: true })
+                        } else {
+                          setRoleMgtPermissions({ ...roleMgtPermissions, status: false })
+                        }
+                      }} />
+                    </div>
+                  </AccordionItem>
+                </Accordion>
               </div>
             </div>
           </div>

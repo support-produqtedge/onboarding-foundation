@@ -21,6 +21,15 @@ export function ChevronUp(props: PropsType) {
   );
 }
 
+export function ChevronDown(props: PropsType) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
 
 
 export function ChevronRight(props: PropsType) {
@@ -674,6 +683,24 @@ export function ChevronUpDown(props: PropsType) {
   return (
     <svg width="10" height="15" viewBox="0 0 10 15" fill="none" {...props}>
       <path d="M0.834991 10.0016L5.00166 14.1683L9.16832 10.0016M0.834991 5.00163L5.00166 0.834961L9.16832 5.00163" stroke="#A4A7AE" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function Eye(props: PropsType) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
+
+export function EyeOff(props: PropsType) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+      <path d="M17.94 17.94C16.23 19.65 14.23 20.5 12 20.5C5 20.5 1 12.5 1 12.5C1 12.5 2.5 9.5 5.5 7.5M9.9 4.24C10.59 4.05 11.29 3.96 12 3.96C19 3.96 23 12 23 12C23 12 21.5 15 18.5 16.5M14.12 14.12C13.85 14.39 13.51 14.56 13.14 14.61C12.77 14.66 12.39 14.59 12.07 14.41C11.75 14.23 11.51 13.95 11.36 13.61C11.21 13.27 11.17 12.89 11.24 12.52C11.31 12.15 11.48 11.81 11.75 11.54C12.02 11.27 12.36 11.1 12.73 11.05C13.1 11 13.48 11.07 13.8 11.25C14.12 11.43 14.36 11.71 14.51 12.05C14.66 12.39 14.7 12.77 14.63 13.14C14.56 13.51 14.39 13.85 14.12 14.12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M1 1L23 23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

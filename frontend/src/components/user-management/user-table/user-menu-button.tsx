@@ -12,6 +12,10 @@ interface RoleMenuButtonProps {
   token: string;
   companyId: string;
   status: string;
+  role?: {
+    id: string,
+    name: string
+  }
   userPermission?: {
   permissions: {
     user_management: {view: boolean, write: boolean, statusChange: boolean},
@@ -20,14 +24,15 @@ interface RoleMenuButtonProps {
 }
 }
 
-export const UserMenuButton = ({ id, token, companyId, status, userPermission }: RoleMenuButtonProps) => {
+export const UserMenuButton = ({ id, token, companyId, status, role, userPermission }: RoleMenuButtonProps) => {
   const [viewUserModal, setViewUserModal] = useState(false);
   const [statusModal, setStatusModal] = useState(false);
   const [editRoleModal, setEditRoleModal] = useState(false);
 
+
   return (
     <>
-    {viewUserModal && <ViewUser onClose={() => setViewUserModal(false)} id={id} token={token} />}
+      {viewUserModal && <ViewUser onClose={() => setViewUserModal(false)} id={id} token={token} />}
       {statusModal && <UserToggleStatusModal onClose={() => setStatusModal(false)} status={status} id={id} token={token} />}
       {editRoleModal && <CreateUserModal edit id={id} token={token} onClose={() => setEditRoleModal(false)} companyId={companyId} />}
       <Menu menuButton={
@@ -51,7 +56,7 @@ export const UserMenuButton = ({ id, token, companyId, status, userPermission }:
 
         }
          {
-           userPermission?.permissions.user_management.statusChange && (<MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
+           userPermission?.permissions.user_management.statusChange && role?.name !== "Owner" && (<MenuItem className="bg-white py-4 px-8 hover:bg-slate-300 hover:cursor-pointer" onClick={() => {
              setStatusModal(true);
            }}>{status ? 'Deactivate' : 'Activate'}</MenuItem>)
 

@@ -32,16 +32,39 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
   });
 
   const [error, setError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const validateConfirmPassword = () => {
+    if (passwordChange.confirmPassword && passwordChange.password !== passwordChange.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setError("");
     setPasswordChange({
       ...passwordChange,
       [event.target.name]: event.target.value
-    })
+    });
+
+    // Validate confirm password when either field changes
+    if (event.target.name === 'confirmPassword' || event.target.name === 'password') {
+      setTimeout(validateConfirmPassword, 0); // Delay to allow state update
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    validateConfirmPassword();
   };
 
   const submitChangePassword = () => {
+    if (passwordChange.password !== passwordChange.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     changePassword(id, passwordChange.password).then(res => {
@@ -86,7 +109,7 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
               label="Password"
               name="password"
               className="mb-5 [&_input]:py-3.75"
-              placeholder="Enter email"
+              placeholder="Enter password"
               type="password"
               handleChange={handlePasswordChange}
 
@@ -98,7 +121,9 @@ export const ChangePasswordForm = ({id}: ChangePasswordProps) => {
                 placeholder="Enter Password"
                 type="password"
                 handleChange={handlePasswordChange}
+                handleBlur={handleConfirmPasswordBlur}
               />
+              {confirmPasswordError && <p className="text-red-600 text-sm -mt-4 mb-2">{confirmPasswordError}</p>}
             </div>
             <button
               className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-3.75 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"

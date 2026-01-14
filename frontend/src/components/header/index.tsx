@@ -39,9 +39,7 @@ export const Header = ({ name }: HeaderProps) => {
 
       <div className="max-xl:hidden">
         <div className="flex items-center gap-1 mb-4">
-          <div className="rounded w-[40px] h-[40px] bg-gray-200">
-
-          </div>
+          <div className="rounded w-10 h-10 bg-gray-200 mr-2" />
           <p className="text-[12px]">{name}</p>
           <ChevronRight />
           <p className="text-[12px]">{path.replace(/\//g, "")}</p>

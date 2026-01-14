@@ -236,7 +236,7 @@ export const CreateUserModal = ({ onClose, token, companyId, edit, id }: CreateU
                 Select Role
               </option>
               {
-                roles.map((role) => (
+                roles.map((role) => role.name !== "Owner" && (
                   <option key={role.id} value={role.id}>
                     {role.name}
                   </option>

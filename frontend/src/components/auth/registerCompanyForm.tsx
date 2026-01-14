@@ -179,13 +179,13 @@ const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
             <div>
               <InputGroup
               label="Enter company name"
-              className="mb-5 [&_input]:py-[15px]"
+              className="mb-5 [&_input]:py-3.75"
               placeholder="Enter company"
               type="text"
               name="name"
               handleChange={handleInputChange}
               />
-              <div className="flex flex-col mb-5 [&_input]:py-[15px]">
+              <div className="flex flex-col mb-5 [&_input]:py-3.75">
                 <InputGroup
                 label="CAC"
                 className=""
@@ -204,7 +204,7 @@ const RegisterCompanyForm = ({ className, ...props }: RegisterCompanyProps) => {
                 </div>
               </div>
 
-              <div className="flex flex-col mb-5 [&_input]:py-[15px]">
+              <div className="flex flex-col mb-5 [&_input]:py-3.75">
                 <InputGroup
                 label="TIN"
                 placeholder="Enter TIN"

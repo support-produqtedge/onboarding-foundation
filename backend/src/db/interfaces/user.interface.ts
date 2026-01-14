@@ -6,6 +6,7 @@ export interface IUser {
   phone: string;
   isEmailVerified: boolean;
   companyId: string;
+  nin: string;
   role_id: string;
   verification_status: boolean;
   password: string;

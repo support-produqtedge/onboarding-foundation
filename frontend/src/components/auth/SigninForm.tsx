@@ -35,7 +35,7 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
             </p>
             <p className="text-sm text-gray-500 mt-2">
               Don't have an account? {" "}
-              <Link href="/register" className="font-semibold text-blue-400">Register</Link>
+              <Link href="/register-type" className="font-semibold text-blue-400">Register</Link>
             </p>
           </div>
         </div>
@@ -46,7 +46,7 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
               <InputGroup
               label="Email"
               name="email"
-              className="mb-5 [&_input]:py-[15px]"
+              className="mb-5 [&_input]:py-3.75"
               placeholder="Enter email"
               type="text"
               value={loginData.email}
@@ -55,7 +55,7 @@ const SignInForm = ({ className, ...props}: SignInFormProps) => {
               <InputGroup
                 label="Password"
                 name="password"
-                className="mb-5 [&_input]:py-[15px]"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Enter Password"
                 type="password"
                 value={loginData.password}
