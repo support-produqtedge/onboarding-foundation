@@ -2,6 +2,8 @@ import z from "zod";
 import { createSession, deleteSession } from "./lib/session";
 import { redirect } from "next/navigation";
 
+const phoneReg = /^(0|\+234)[789]\d{9}$/
+
 const adminLoginSchema = z.object({
   email: z.email({ message: "Invalid email address" }).trim(),
   password: z.string().min(1, { message: "Invalid login credentials"})
@@ -16,7 +18,7 @@ const registerUserSchema = z.object({
   firstName: z.string({ message: "Invalid credentials"}).trim(),
   lastName: z.string({ message: "Invalid credentials"}).trim(),
   email: z.email({ message: "Invalid email address" }).trim(),
-  phone: z.string(),
+  phone: z.string().regex(phoneReg, "Invalid phone number"),
   password: z.string()
 });
 
@@ -24,7 +26,16 @@ const registerCompanySchema = z.object({
   name: z.string({ message: "Company name is required" }).min(1, {message: "Company name is required."}),
   cac: z.string({ message: "CAC is required" }).trim(),
   tin: z.string({ message: "TIN is required" }).trim()
-})
+});
+
+const registerPersonalUser = z.object({
+  firstName: z.string({message: "Invalid credentials"}).trim(),
+  lastName:z.string({ message: "Invalid credentials"}).trim(),
+  email: z.email({ message: "Invalid email address"}).trim(),
+  phone: z.string().regex(phoneReg, "Invalid phone number"),
+  nin: z.string(),
+  password: z.string()
+});
 
 
 export async function loginAdmin(prevState: unknown, formData: FormData) {
@@ -159,6 +170,41 @@ export async function registerCompany(prevState: unknown, formData: FormData) {
     }
   } else {
     redirect("/check-email");
+  }
+}
+
+export async function registerSingleUser(prevState: unknown, formData: FormData) {
+  const registerData = registerPersonalUser.safeParse(Object.fromEntries(formData));
+
+  if (!registerData.success) {
+    const { fieldErrors } = z.flattenError(registerData.error);
+    if (fieldErrors.phone) {
+      return {
+        error: fieldErrors.phone[0]
+      }
+    }
+    return {
+      error: "Invalid credentials"
+    }
+  }
+
+  const { firstName, lastName, email, phone, nin, password } = registerData.data;
+
+  const response = await fetch("/api/auth/register-user", {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({firstName, lastName, email, phone, nin, password})
+  });
+
+  if (!response.ok) {
+    return {
+      error: "Invalid credentials"
+    }
+  } else {
+    redirect("/check-email")
   }
 }
 

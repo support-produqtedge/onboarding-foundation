@@ -79,6 +79,33 @@ class AuthController {
     try {
       const userCreationKey = await this.authService.createSingleUser(firstName, lastName, email, phone, password, nin);
       if (!userCreationKey) throw new Error("Something went wrong");
+      const user = await this.userService.getUserByEmail(email);
+
+      MailService({
+        subject: "Welcome to Produqtedge",
+        email: user.email,
+        html: `
+                <html>
+
+                  <body>
+                      <table>
+                          <tr>
+                              <td style="padding-bottom: 2.5em; font-size: 13px; font-family: Arial, Helvetica, sans-serif;">
+                                      <h1 style="font-size: 20px; text-align: center;">Welcome to Produqtedge</h1>
+                                      <div style="padding-bottom: 10px">Dear ${user.firstName} ${user.lastName},</div>
+                                      <div style="padding-bottom: 10px">You have signed up a new company on the Produqtedge platform</div>
+                                      <div style="text-align: center; font-weight: 600;">
+                                          <a href="${ONBOARDING_FOUNDATION_URL}/verify-email?key=${userCreationKey.registerKey}">Link</a>
+                                      </div>
+                                      <div style="padding-top: 20px;">If you do not recognise this admin, kindly ignore this message</div>
+                                      <div style="padding-top: 10px; font-size: 13px;">Produqtedge Team</div>
+                              </td>
+                            </tr><!-- end: tr -->
+                      </table>
+                  </body>
+              </html>
+              `
+      });
 
       res.status(201).json(userCreationKey);
     } catch (error) {

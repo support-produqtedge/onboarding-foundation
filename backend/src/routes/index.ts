@@ -1,6 +1,6 @@
 import express from "express";
 import AuthController from "../controllers/auth.controller";
-import { emailVerified, requireSignin } from "../middlewares/auth.middlewar";
+import { emailVerified, requireSignin, verificationStatusCheck } from "../middlewares/auth.middlewar";
 import SuperAdminController from "../controllers/super-admin.controller";
 import RoleController from "../controllers/role.controller";
 import UserController from "../controllers/user.controller";
@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 
 const authCtrl = new AuthController();
 router.post("/admin/auth/login", authCtrl.loginSuperAdmin);
-router.post("/auth/login", emailVerified, authCtrl.loginUser);
+router.post("/auth/login", emailVerified, verificationStatusCheck, authCtrl.loginUser);
 router.post("/auth/register", authCtrl.registerCompanyOwner);
 router.post("/auth/register-user", authCtrl.registerSingleUser);
 router.post("/auth/register-company", validateKyc, authCtrl.registerCompany);

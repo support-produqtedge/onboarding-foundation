@@ -45,7 +45,11 @@ export async function UserTable({ users, token, companyId, userPermission }: Use
       <div className="rounded-[10px] bg-white shadow-1">
         <div className="w-full flex justify-between items-center pb-7">
           <div>
-            <input placeholder="Search" className="border"/>
+            <input
+              type="text"
+              className="mt-4.5 [&_input]:py-3.75 border border-slate-500 rounded-lg pl-4"
+              placeholder="Search"
+            />
           </div>
           {
             userPermission.permissions?.user_management.write && (<CreateUserButton token={token} companyId={companyId} />)
@@ -108,7 +112,7 @@ export async function UserTable({ users, token, companyId, userPermission }: Use
 
 
                 <TableCell className="xl:pr-7.5">
-                  <UserMenuButton token={token} id={item.id} companyId={companyId} status={item.status} userPermission={userPermission}/>
+                  <UserMenuButton role={item.role} token={token} id={item.id} companyId={companyId} status={item.status} userPermission={userPermission}/>
                 </TableCell>
               </TableRow>
             ))}

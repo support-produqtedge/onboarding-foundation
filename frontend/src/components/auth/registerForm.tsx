@@ -12,6 +12,7 @@ interface User {
   email: string;
   phone: string;
   password: string;
+  confirmPassword: string;
 }
 
 const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
@@ -20,11 +21,13 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
     lastName: "",
     email: "",
     phone: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   });
 
   const [state, registerUserAction, isPending] = useActionState(registerUser, undefined);
   const [error, setError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   useEffect(() => {
     if (state?.error && state?.error !== error) {
@@ -32,12 +35,37 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
     }
   }, [state]);
 
+  const validateConfirmPassword = () => {
+    if (registerUserCred.confirmPassword && registerUserCred.password !== registerUserCred.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    validateConfirmPassword();
+  };
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRegisteUserCred({
       ...registerUserCred,
       [e.target.name]: e.target.value
     });
-  }
+
+    // Validate confirm password when either field changes
+    if (e.target.name === 'confirmPassword' || e.target.name === 'password') {
+      setTimeout(validateConfirmPassword, 0);
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    if (registerUserCred.password !== registerUserCred.confirmPassword) {
+      e.preventDefault();
+      setConfirmPasswordError("Passwords do not match");
+      return;
+    }
+  };
 
   return (
     <div className="w-[80%] pb-10">
@@ -58,7 +86,9 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
           <div className="bg-gray-200 h-1 w-1/2 rounded-2xl"></div>
         </div>
         {error && <p className="text-red-600 text-sm text-center -mt-2">{error}</p>}
-        <form action={registerUserAction}>
+        <form action={() => {
+          console.log(registerUserCred);
+        }} onSubmit={handleFormSubmit}>
           <div className="space-y-6 mt-2">
             <div>
               <div className="flex gap-2 justify-between">
@@ -69,6 +99,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                   placeholder="Enter first name"
                   type="text"
                   handleChange={handleInputChange}
+                  value={registerUserCred.firstName}
                 />
                 <InputGroup
                   label="Last Name"
@@ -77,6 +108,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                   placeholder="Enter last name"
                   type="text"
                   handleChange={handleInputChange}
+                  value={registerUserCred.lastName}
                 />
               </div>
               <InputGroup
@@ -86,6 +118,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                 placeholder="Enter email"
                 type="email"
                 handleChange={handleInputChange}
+                value={registerUserCred.email}
               />
               <InputGroup
                 label="Phone"
@@ -94,6 +127,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                 placeholder="Enter phone number"
                 type="text"
                 handleChange={handleInputChange}
+                value={registerUserCred.phone}
               />
               <InputGroup
                 label="Password"
@@ -102,19 +136,24 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                 placeholder="Enter password"
                 type="password"
                 handleChange={handleInputChange}
+                value={registerUserCred.password}
               />
               <InputGroup
                 label="Confirm Password"
-                className="mb-5 [&_input]:py-[15px]"
+                name="confirmPassword"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Confirm password"
                 type="password"
                 handleChange={handleInputChange}
+                handleBlur={handleConfirmPasswordBlur}
+                value={registerUserCred.confirmPassword}
               />
+              {confirmPasswordError && <p className="text-red-600 text-sm -mt-4 mb-2">{confirmPasswordError}</p>}
             </div>
             <button
               type="submit"
               className="inline-flex w-full items-center justify-center rounded-lg bg-[#24292F] disabled:bg-[#24292F]/60 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#24292F]/90 focus:outline-none focus:ring-4 focus:ring-[#24292F]/50"
-              disabled={isPending}
+              disabled={isPending && confirmPasswordError !== ""}
             >
               <span className="inline-block pr-2">Continue</span>
               {isPending && (

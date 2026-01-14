@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utilities";
 import {
   Table,
   TableBody,
@@ -10,6 +9,7 @@ import {
 import dayjs from "dayjs";
 import { CreateRoleButton } from "./create-role-button";
 import { RoleMenuButton } from "./role-menu-button";
+import InputGroup from "@/components/ui/InputGroup";
 
 interface RoleTableProps {
   roles: {
@@ -37,7 +37,11 @@ export async function RoleTable({ roles, token, companyId, userPermission }: Rol
       <div className="rounded-[10px] bg-white shadow-1">
         <div className="w-full flex justify-between items-center pb-7">
           <div>
-            <input placeholder="Search" className="border"/>
+            <input
+              type="text"
+              className="mt-4.5 [&_input]:py-3.75 border border-slate-500 rounded-lg pl-4"
+              placeholder="Search"
+            />
           </div>
           {
             userPermission.permissions.role_management.write && (<CreateRoleButton token={token} companyId={companyId} />)
