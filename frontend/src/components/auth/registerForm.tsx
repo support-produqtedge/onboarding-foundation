@@ -59,13 +59,6 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    if (registerUserCred.password !== registerUserCred.confirmPassword) {
-      e.preventDefault();
-      setConfirmPasswordError("Passwords do not match");
-      return;
-    }
-  };
 
   return (
     <div className="w-[80%] pb-10">
@@ -86,16 +79,14 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
           <div className="bg-gray-200 h-1 w-1/2 rounded-2xl"></div>
         </div>
         {error && <p className="text-red-600 text-sm text-center -mt-2">{error}</p>}
-        <form action={() => {
-          console.log(registerUserCred);
-        }} onSubmit={handleFormSubmit}>
+        <form action={registerUserAction}>
           <div className="space-y-6 mt-2">
             <div>
               <div className="flex gap-2 justify-between">
                 <InputGroup
                   label="First Name"
                   name="firstName"
-                  className="mb-5 [&_input]:py-[15px]"
+                  className="mb-5 [&_input]:py-3.75"
                   placeholder="Enter first name"
                   type="text"
                   handleChange={handleInputChange}
@@ -104,7 +95,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
                 <InputGroup
                   label="Last Name"
                   name="lastName"
-                  className="mb-5 [&_input]:py-[15px]"
+                  className="mb-5 [&_input]:py-3.75"
                   placeholder="Enter last name"
                   type="text"
                   handleChange={handleInputChange}
@@ -114,7 +105,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
               <InputGroup
                 label="Email"
                 name="email"
-                className="mb-5 [&_input]:py-[15px]"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Enter email"
                 type="email"
                 handleChange={handleInputChange}
@@ -123,7 +114,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
               <InputGroup
                 label="Phone"
                 name="phone"
-                className="mb-5 [&_input]:py-[15px]"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Enter phone number"
                 type="text"
                 handleChange={handleInputChange}
@@ -132,7 +123,7 @@ const RegisterForm = ({ className, ...props }: RegisterFormProps) => {
               <InputGroup
                 label="Password"
                 name="password"
-                className="mb-5 [&_input]:py-[15px]"
+                className="mb-5 [&_input]:py-3.75"
                 placeholder="Enter password"
                 type="password"
                 handleChange={handleInputChange}

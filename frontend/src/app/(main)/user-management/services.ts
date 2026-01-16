@@ -1,4 +1,4 @@
-import { RoleResponse, UserResponse } from "./model";
+import { PersonalUsersResponse, RoleResponse, UserResponse } from "./model";
 
 const apiUrl = "http://localhost:3008/api/v1";
 
@@ -65,5 +65,22 @@ export const getRolesByCompany = async (token: string, id: string): Promise<Role
     return await response.json();
   } catch (error) {
     throw new Error(String(error))
+  }
+}
+
+export const getPersonalUsers = async (token: string): Promise<PersonalUsersResponse[]> => {
+  try {
+    const response = await fetch(`${apiUrl}/personal-users`, {
+      method: "POST",
+      headers: {
+        "Accept": "aplication/json",
+        "content-type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(String(error));
   }
 }

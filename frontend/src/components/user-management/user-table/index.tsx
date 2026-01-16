@@ -13,29 +13,29 @@ import { UserMenuButton } from "./user-menu-button";
 
 interface UserTableProps {
   users: {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  role: {
-    id: string,
-    name: string,
-    description: string
-  },
-  isEmailVerified: boolean;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date
-}[];
-token: string;
-companyId: string;
-userPermission: {
-  permissions: {
-    user_management: {view: boolean, write: boolean, statusChange: boolean},
-    role_management: {view: boolean, write: boolean, statusChange: boolean},
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    role: {
+      id: string,
+      name: string,
+      description: string
+    },
+    isEmailVerified: boolean;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date
+  }[];
+  token: string;
+  companyId: string;
+  userPermission: {
+    permissions: {
+      user_management: { view: boolean, write: boolean, statusChange: boolean },
+      role_management: { view: boolean, write: boolean, statusChange: boolean },
+    }
   }
-}
 }
 
 export async function UserTable({ users, token, companyId, userPermission }: UserTableProps) {
@@ -112,7 +112,7 @@ export async function UserTable({ users, token, companyId, userPermission }: Use
 
 
                 <TableCell className="xl:pr-7.5">
-                  <UserMenuButton role={item.role} token={token} id={item.id} companyId={companyId} status={item.status} userPermission={userPermission}/>
+                  <UserMenuButton role={item.role} token={token} id={item.id} companyId={companyId} status={item.status} userPermission={userPermission} />
                 </TableCell>
               </TableRow>
             ))}

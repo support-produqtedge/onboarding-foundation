@@ -79,6 +79,18 @@ class UserController {
     }
   }
 
+  public getPersonalUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.userService.getSingleUsers();
+      res.status(200).json(users);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(createHttpError(400, error))
+      }
+      next(createHttpError(400))
+    }
+  }
+
   public getUserById = async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id;
     try {

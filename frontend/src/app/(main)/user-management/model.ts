@@ -23,3 +23,16 @@ export interface RoleResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface PersonalUsersResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  status?: boolean;
+  isEmailVerified: boolean;
+  verification_status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
