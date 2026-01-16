@@ -45,6 +45,7 @@ router.get("/users/:id", requireSignin, userCtrl.getUserById);
 router.put("/users/:id", requireSignin, userCtrl.editUser);
 router.get("/usersbycompany", requireSignin, userCtrl.getUsersByCompany);
 router.get("/users/activestatus/:id", requireSignin, userCtrl.activateDeactivate);
+router.get("/personal-users", requireSignin, userCtrl.getPersonalUsers);
 
 const companyCtrl = new CompanyController();
 router.get("/admin/superadmin/companies", requireSignin, companyCtrl.getCompanies);

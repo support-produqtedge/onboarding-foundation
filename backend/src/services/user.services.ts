@@ -198,6 +198,27 @@ class UserService {
     }
   }
 
+  public async getSingleUsers() {
+    try {
+      const users = await this.User.findAll({ where: {companyId: null}, attributes: [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "isEmailVerified",
+        "verification_status"
+      ]});
+
+      return users;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error(String(error));
+    }
+  }
+
   public async getUserByEmail(email: string) {
     try {
       const user = await this.User.findOne({ where : {email}});

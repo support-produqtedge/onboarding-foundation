@@ -1,7 +1,7 @@
 import { OverviewCardsGroup } from "@/components/user-management/overview-cards";
 import { UserTable } from "@/components/user-management/user-table";
 import { verifySession } from "@/dal";
-import { getRoles, getRolesByCompany, getUser, getUserByCompany } from "./services";
+import { getPersonalUsers, getRoles, getRolesByCompany, getUser, getUserByCompany } from "./services";
 import { getSignedUser } from "../services";
 
 const UserManagementPage = async () => {
