@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Toaster } from "@/components/ui/toast";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  weight: ['100', '200', '300', '400', '500', '600'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "Produqtedge - Onboarding Foundation",
@@ -28,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.variable} font-sans antialiased`}
       >
         <NextTopLoader color="#F68E1E" showSpinner={false} />
           {children}

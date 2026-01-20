@@ -29,7 +29,7 @@ const NAV_DATA = [
         access: ["superAdmin", "user"]
       },
       {
-        title: "User Management",
+        title: "Users Management",
         url: "/user-management",
         icon: <UserManagementIcon />,
         items: [],
@@ -193,8 +193,8 @@ export function Sidebar({name, email, role, company}: SideBarProps) {
             <div className="flex items-center gap-2 border border-slate-300 p-3">
               <div className="rounded-full w-10 h-10 bg-gray-500"></div>
               <div>
-                <h1 className="text-lg font-semibold">{name}</h1>
-                <p className="text-sm text-slate-500">{email}</p>
+                <h1 className="text-sm font-semibold">{name}</h1>
+                <p className="text-xs text-slate-500">{email}</p>
               </div>
               <div className="ml-auto">
                 <ProfileMenuButton />

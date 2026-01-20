@@ -183,6 +183,7 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
       actionName="Create Role"
       action={() => onSubmit()}
       isLoading={isLoading}
+      icon={true}
     >
       <form>
         <InputGroup
@@ -203,33 +204,39 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
         />
         <div className="py-3">
           <h1 className="font-semibold">Permissions</h1>
-          <div className="px-5">
+          <div className="px-2">
             <div className="py-3 border-b border-slate-300">
               <div>
                 <Accordion>
                   <AccordionItem header="User Management">
-                    <div className="flex flex-wrap gap-4 mt-5">
-                      <Checkbox label="View only" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setUserMgtPermissions({ ...userMgtPermissions, view: true })
-                        } else {
-                          setUserMgtPermissions({ ...userMgtPermissions, view: false })
-                        }
-                      }} />
-                      <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setUserMgtPermissions({ ...userMgtPermissions, write: true })
-                        } else {
-                          setUserMgtPermissions({ ...userMgtPermissions, write: false })
-                        }
-                      }} />
-                      <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setUserMgtPermissions({ ...userMgtPermissions, status: true })
-                        } else {
-                          setUserMgtPermissions({ ...userMgtPermissions, status: false })
-                        }
-                      }} />
+                    <div className="flex flex-wrap gap-4 mt-5 text-slate-800">
+                      <div className={cn("p-1 rounded-lg", userMgtPermissions.view && "border border-slate-400")}>
+                        <Checkbox label="View only" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserMgtPermissions({ ...userMgtPermissions, view: true })
+                          } else {
+                            setUserMgtPermissions({ ...userMgtPermissions, view: false })
+                          }
+                        }} />
+                      </div>
+                      <div className={cn("p-1 rounded-lg", userMgtPermissions.write && "border border-slate-400")}>
+                        <Checkbox label="View and Write" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserMgtPermissions({ ...userMgtPermissions, write: true })
+                          } else {
+                            setUserMgtPermissions({ ...userMgtPermissions, write: false })
+                          }
+                        }} />
+                      </div>
+                      <div className={cn("p-1 rounded-lg", userMgtPermissions.status && "border border-slate-400")}>
+                        <Checkbox label="Activate Status" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setUserMgtPermissions({ ...userMgtPermissions, status: true })
+                          } else {
+                            setUserMgtPermissions({ ...userMgtPermissions, status: false })
+                          }
+                        }} />
+                      </div>
                     </div>
                   </AccordionItem>
                 </Accordion>
@@ -239,28 +246,34 @@ export const CreateRoleModal = ({ onClose, token, edit, id, companyId }: CreateR
               <div>
                 <Accordion>
                   <AccordionItem header="Role Management">
-                    <div className="flex flex-wrap gap-4 mt-5">
-                      <Checkbox label="View only" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, view: true })
-                        } else {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, view: false })
-                        }
-                      }} />
-                      <Checkbox label="View and Write" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, write: true })
-                        } else {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, write: false })
-                        }
-                      }} />
-                      <Checkbox label="Activate Status" withIcon="check" onChange={(e) => {
-                        if (e.target.checked) {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, status: true })
-                        } else {
-                          setRoleMgtPermissions({ ...roleMgtPermissions, status: false })
-                        }
-                      }} />
+                    <div className="flex flex-wrap gap-4 mt-5 text-slate-800">
+                      <div className={cn("p-1 rounded-lg", roleMgtPermissions.view && "border border-slate-400")}>
+                        <Checkbox label="View only" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, view: true })
+                          } else {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, view: false })
+                          }
+                        }} />
+                      </div>
+                      <div className={cn("p-1 rounded-lg", roleMgtPermissions.write && "border border-slate-400")}>
+                        <Checkbox label="View and Write" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, write: true })
+                          } else {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, write: false })
+                          }
+                        }} />
+                      </div>
+                      <div className={cn("p-1 rounded-lg", roleMgtPermissions.status && "border border-slate-400")}>
+                        <Checkbox label="Activate Status" withIcon="check" withBg={true} onChange={(e) => {
+                          if (e.target.checked) {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, status: true })
+                          } else {
+                            setRoleMgtPermissions({ ...roleMgtPermissions, status: false })
+                          }
+                        }} />
+                      </div>
                     </div>
                   </AccordionItem>
                 </Accordion>
