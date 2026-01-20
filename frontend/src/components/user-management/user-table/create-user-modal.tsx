@@ -183,6 +183,7 @@ export const CreateUserModal = ({ onClose, token, companyId, edit, id }: CreateU
       actionName={edit ? "Edit User" : "Create User"}
       action={() => onSubmit()}
       isLoading={isLoading}
+      icon={true}
     >
       <form>
         <InputGroup
